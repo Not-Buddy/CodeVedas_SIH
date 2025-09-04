@@ -1,0 +1,48 @@
+nav{
+    display: flex;
+    margin: 1em 7em;
+    padding: 3px;
+    border: 2px solid black;
+    border-radius: 3em;
+}
+
+h2{
+    color: #58D34A;
+    margin: 0;
+}
+
+p{
+    font-size: small;
+    margin: 0;
+}
+
+.left{
+    display: flex;
+    width:50%;
+    flex: row wrap;
+    justify-content: flex-start;
+}
+
+.left-text{
+    flex-direction: column;
+    align-self: center;
+}
+
+.right{
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+}
+
+.right img{
+    border-radius: 100%;
+}
+
+#ayush{
+    z-index: 1;
+    margin-right: -1em;
+}
+
+#who{
+    margin-left: -1em;
+}
