@@ -2,7 +2,7 @@ use actix_web::{web, App, HttpServer, HttpResponse, Result, middleware::Logger};
 use serde::{Deserialize, Serialize};
 
 // Import our MongoDB module from the crate root
-use crate::dbcodes::mongo; 
+use crate::dbcodes::{mongo, redis}; 
 
 // Basic response structure
 #[derive(Serialize, Deserialize)]
@@ -139,14 +139,33 @@ async fn mongodb_status() -> Result<HttpResponse> {
 }
 
 
+// Data Layer - REAL Redis status using our redis module
 async fn redis_status() -> Result<HttpResponse> {
-    Ok(HttpResponse::Ok().json(ApiResponse {
+    let status = redis::get_connection_status().await;  // Fix: Use correct function name
+    
+    let message = if status.connected {
+        status.server_info.unwrap_or_else(|| "Redis connected".to_string())
+    } else {
+        format!("Connection failed: {}", 
+            status.error.unwrap_or_else(|| "Unknown error".to_string())
+        )
+    };
+    
+    let response = ApiResponse {
         service: "Redis Cache".to_string(),
-        status: "connected".to_string(),
-        message: "Cache layer operational".to_string(),
+        status: if status.connected { "connected" } else { "disconnected" }.to_string(),
+        message,
         timestamp: chrono::Utc::now().to_rfc3339(),
-    }))
+    };
+    
+    if status.connected {
+        Ok(HttpResponse::Ok().json(response))
+    } else {
+        Ok(HttpResponse::ServiceUnavailable().json(response))
+    }
 }
+
+
 
 // External APIs
 async fn who_api() -> Result<HttpResponse> {
@@ -272,6 +291,12 @@ pub async fn start_server() -> std::io::Result<()> {
         Err(e) => println!("⚠️  MongoDB connection failed: {} (server will still start)", e),
     }
     
+    // Initialize Redis connection
+    match redis::init_redis().await {
+        Ok(_) => println!("✅ Redis connection initialized"),
+        Err(e) => println!("⚠️  Redis connection failed: {} (server will still start)", e),
+    }
+    
     println!("📊 Server running on http://127.0.0.1:8080");
     println!("🏥 Health check: http://127.0.0.1:8080/health");
     println!();
@@ -283,7 +308,7 @@ pub async fn start_server() -> std::io::Result<()> {
     println!("   GET /core/*                    - Core components");
     println!("   GET /data/mongodb              - MongoDB connection status");
     println!("   GET /data/mongodb/collections  - List MongoDB collections");
-    println!("   GET /data/redis                - Redis status");
+    println!("   GET /data/redis                - Redis connection status");
     println!("   GET /external/*                - External APIs");
     
     HttpServer::new(|| create_app())
