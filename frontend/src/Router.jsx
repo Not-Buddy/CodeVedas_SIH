@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //import whatever components you want here
 import HomePage from './Home';
+import Login from './login/login';
 
 const Router = () => {
   return (
@@ -8,6 +9,7 @@ const Router = () => {
       {/* <Navbar />  <-- Navbar here would keep it static for all pages.*/}
       <Routes>
         <Route index element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
         {/* Add your pages in a Route component like these: */}
         {/* 
         <Route index element={<HomePage />} />
