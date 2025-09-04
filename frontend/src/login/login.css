@@ -1,4 +1,3 @@
-/* login.css - COMPLETELY REFACTORED */
 * {
   margin: 0;
   padding: 0;
@@ -32,24 +31,28 @@ body {
   overflow: hidden;
 }
 
-/* Form Section - Compact and efficient */
+/* Form Section - 50% width on desktop */
 .login-form-section {
-  flex: 0 0 45%;
+  flex: 0 0 50%; /* Exactly 50% width */
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 2rem;
+  padding: 2rem;
   justify-content: center;
   overflow-y: auto;
+  position: relative;
+  scale: 0.9;
 }
 
 .form-container {
   max-width: 380px;
   margin: 0 auto;
   width: 100%;
+  /* To adjust vertical position, change this margin-top value */
+  margin-top: 3rem; /* Default position - increase to move content down further */
 }
 
 .logo-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
@@ -62,53 +65,54 @@ body {
 .logo-image {
   width: 160px;
   height: 50px;
-  background-image: url('../assets/mainlogo.png');
+  background-image: url('/assets/mainlogo.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  scale: 1.7;
 }
 
 .welcome-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
 .welcome-title {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #4CAF50;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
 }
 
 .welcome-subtitle {
   color: #757575;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .form-label {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #333;
   font-weight: 500;
 }
 
 .form-input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
   border: 1.5px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
   background: white;
   transition: all 0.2s ease;
   outline: none;
@@ -116,7 +120,7 @@ body {
 
 .form-input:focus {
   border-color: #4CAF50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
 }
 
 .form-input::placeholder {
@@ -158,7 +162,7 @@ body {
   background: none;
   border: none;
   color: #4CAF50;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   cursor: pointer;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -171,12 +175,12 @@ body {
 
 .login-button {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
   background: #4CAF50;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -186,17 +190,17 @@ body {
 .login-button:hover {
   background: #45a049;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .otp-button {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
   background: #e3f2fd;
   color: #1976d2;
   border: 1.5px solid #e3f2fd;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -209,19 +213,19 @@ body {
 
 .signup-section {
   text-align: center;
-  margin-top: 1.2rem;
+  margin-top: 1.5rem;
 }
 
 .signup-text {
   color: #666;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .signup-link {
   background: none;
   border: none;
   color: #4CAF50;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -237,17 +241,18 @@ body {
   margin-top: auto;
   text-align: center;
   padding-top: 1.5rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
+  width: 100%;
 }
 
 .footer p {
   color: #999;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
-/* Hero Section */
+/* Hero Section - 50% width on desktop */
 .hero-section {
-  flex: 0 0 55%;
+  flex: 0 0 50%; /* Exactly 50% width */
   background: linear-gradient(135deg, #a8e6a3 0%, #88c999 50%, #7bb88f 100%);
   overflow: hidden;
 }
@@ -269,7 +274,28 @@ body {
   display: none;
 }
 
-/* Mobile Responsiveness */
+/* Tablet Responsiveness (900px to 1024px) */
+@media (max-width: 1024px) {
+  .login-form-section {
+    flex: 0 0 50%;
+    padding: 1.5rem;
+  }
+  
+  .form-container {
+    max-width: 350px;
+    margin-top: 2rem;
+  }
+  
+  .welcome-title {
+    font-size: 1.6rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile and Tablet Responsiveness (below 900px) */
 @media (max-width: 900px) {
   .login-content {
     flex-direction: column;
@@ -282,13 +308,14 @@ body {
     justify-content: flex-start;
   }
   
-  .hero-section {
-    flex: 0 0 220px;
-    order: 1;
-  }
-  
   .form-container {
     max-width: 100%;
+    margin-top: 1rem; /* Less top margin on mobile */
+  }
+  
+  .hero-section {
+    flex: 0 0 250px;
+    order: 1;
   }
   
   .logo-image {
@@ -297,11 +324,11 @@ body {
   }
   
   .welcome-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
   
   .welcome-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
   
   .hero-image-desktop {
@@ -313,6 +340,7 @@ body {
   }
 }
 
+/* Small Mobile Responsiveness */
 @media (max-width: 480px) {
   .login-form-section {
     padding: 1.2rem;
@@ -324,16 +352,21 @@ body {
   }
   
   .welcome-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
   
   .form-input,
   .login-button,
   .otp-button {
-    padding: 0.7rem;
+    padding: 0.8rem;
   }
   
   .hero-section {
-    flex: 0 0 180px;
+    flex: 0 0 200px;
+  }
+  
+  .footer {
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
   }
 }
