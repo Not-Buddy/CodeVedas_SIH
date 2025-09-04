@@ -93,6 +93,11 @@ impl MongoClient {
             .await
     }
     
+    // ADD THIS METHOD: Get database by name
+    pub fn get_database_by_name(&self, db_name: &str) -> Database {
+        self.client.database(db_name)
+    }
+    
     // Health check - ping the database
     pub async fn health_check(&self) -> ConnectionStatus {
         match self.client
