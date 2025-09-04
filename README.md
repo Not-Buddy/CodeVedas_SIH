@@ -16,3 +16,12 @@ To Import ayurveda codes inside backend/csvs
 ```bash
 mongoimport --db ayurveda_db --collection namc_codes --type csv --headerline --file "NAMC_FINAL.csv"
 ```
+
+Docker image for ICDapi
+```bash
+docker run -p 80:80 -e acceptLicense=true -e saveAnalytics=true whoicd/icd-api
+```
+
+'''bash
+docker run -p 8000:80 -e acceptLicense=true -e saveAnalytics=true whoicd/icd-api 
+'''

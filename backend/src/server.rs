@@ -43,7 +43,13 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
         .service(
             web::scope("/terminology")
                 .route("/ayurveda", web::get().to(api::ayurveda_terminology))
+        )
+        .service(
+            web::scope("/namaste")
+            .route("/search", web::get().to(api::namaste_search))
+            .route("/all", web::get().to(api::namaste_all))
         );
+
 }
 
 // Create the application
