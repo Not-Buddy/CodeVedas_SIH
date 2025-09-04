@@ -1,0 +1,24 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+//import whatever components you want here
+import HomePage from './Home';
+
+const Router = () => {
+  return (
+    <BrowserRouter>
+      {/* <Navbar />  <-- Navbar here would keep it static for all pages.*/}
+      <Routes>
+        <Route index element={<HomePage />} />
+        {/* Add your pages in a Route component like these: */}
+        {/* 
+        <Route index element={<HomePage />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/cats" element={<Categories />} /> 
+        */}
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default Router;
