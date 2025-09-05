@@ -1,6 +1,7 @@
-use actix_web::{web, App, HttpServer, middleware::Logger};
+use actix_web::{web, App, HttpServer, middleware::Logger, http};
 use crate::dbcodes::{mongo, redis};
 use crate::api;  // Import the api module
+use actix_cors::Cors;
 
 // Configure all routes
 fn configure_routes(cfg: &mut web::ServiceConfig) {
@@ -71,7 +72,19 @@ pub fn create_app() -> App<
         InitError = (),
     >
 > {
+    let cors = Cors::default()
+    .allowed_origin("http://localhost:5173")
+    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+    .allowed_headers(vec![
+        http::header::AUTHORIZATION,
+        http::header::ACCEPT,
+        http::header::CONTENT_TYPE,
+    ])
+    .supports_credentials()
+    .max_age(3600);
+
     App::new()
+        .wrap(cors)
         .configure(configure_routes)
         .wrap(Logger::default())
         .wrap(

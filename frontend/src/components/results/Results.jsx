@@ -6,7 +6,7 @@ const results = {
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima animi porro aliquid hic nemo id, neque ea assumenda rem similique reprehenderit? Animi quae nam esse saepe commodi non impedit obcaecati."
 }
 
-const Results = () => {
+const Results = ({result}) => {
     return(
     <>
         <div className="outer">

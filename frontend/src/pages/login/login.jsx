@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './login.css';
 
 const Login = () => {
@@ -104,10 +105,11 @@ const Login = () => {
                   Forgot password?
                 </button>
               </div>
-
-              <button type="submit" className="login-button">
-                Log in
-              </button>
+              <Link to={"/home"}>
+                <button type="submit" className="login-button">
+                  Log in
+                </button>
+              </Link>
 
               <button type="button" className="otp-button" onClick={handleOTPLogin}>
                 Login with OTP
