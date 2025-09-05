@@ -22,6 +22,24 @@ Docker image for ICDapi
 docker run -p 80:80 -e acceptLicense=true -e saveAnalytics=true whoicd/icd-api
 ```
 
-'''bash
+```bash
 docker run -p 8000:80 -e acceptLicense=true -e saveAnalytics=true whoicd/icd-api 
-'''
+```
+
+Import ICD-11 into mongo scrapped csv in /csvs/ICD-11
+```bash
+mongoimport --db icd11_database --collection icd11_entities --type csv --headerline --file icd11_mms.csv
+```
+
+Post Import Index creation
+```bash
+mongosh icd11_database --eval "
+db.icd11_entities.createIndex({'id': 1}, {unique: true});
+db.icd11_entities.createIndex({'code': 1}, {sparse: true});
+db.icd11_entities.createIndex({'parent': 1});
+db.icd11_entities.createIndex({'title': 'text', 'definition': 'text', 'synonyms': 'text'});
+db.icd11_entities.createIndex({'parent': 1, 'isLeaf': 1});
+db.icd11_entities.createIndex({'code': 1, 'isLeaf': 1});
+print('Indexes created successfully');
+"
+```
