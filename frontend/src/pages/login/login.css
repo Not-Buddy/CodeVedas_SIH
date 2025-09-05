@@ -33,12 +33,12 @@ body {
 
 /* Form Section - 50% width on desktop */
 .login-form-section {
-  flex: 0 0 50%; /* Exactly 50% width */
+  flex: 0 0 50%;
   display: flex;
   flex-direction: column;
   padding: 2rem;
   justify-content: center;
-  overflow-y: auto;
+  overflow-y: hidden; /* Was 'auto' before */
   position: relative;
   scale: 0.9;
 }

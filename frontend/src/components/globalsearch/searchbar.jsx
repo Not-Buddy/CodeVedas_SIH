@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './searchbar.css';
 
-const SearchBar = ({ onSearch, onClear }) => {
+const SearchBar = ({ onSubmit, onClear }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
@@ -12,11 +12,7 @@ const SearchBar = ({ onSearch, onClear }) => {
   });
 
   const handleSearchChange = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (onSearch) {
-      onSearch(query);
-    }
+    setSearchQuery(e.target.value);
   };
 
   const handleClearAll = () => {
@@ -25,7 +21,7 @@ const SearchBar = ({ onSearch, onClear }) => {
       systems: [],
       organSystem: 'All',
       discipline: [],
-      language: []
+      language: []  
     });
     if (onClear) {
       onClear();
@@ -62,11 +58,25 @@ const SearchBar = ({ onSearch, onClear }) => {
     return count;
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    
+    const searchData = {
+      query: searchQuery,
+      filters: activeFilters 
+    };
+    
+    if (onSubmit) {
+      onSubmit(searchData);
+    }
+  };
+
+
   return (
     <div className="global-search-container">
       <h2 className="search-title">Global Search</h2>
       
-      <div className="search-input-container">
+      <form className="search-input-container" onSubmit={handleSubmit}>
         <input
           type="text"
           className="search-input"
@@ -74,7 +84,8 @@ const SearchBar = ({ onSearch, onClear }) => {
           value={searchQuery}
           onChange={handleSearchChange}
         />
-      </div>
+      </form>
+
 
       <div className="search-controls">
         <div className="filters-section">

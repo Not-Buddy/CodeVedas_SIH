@@ -2,6 +2,205 @@ use actix_web::{web, HttpResponse, Result};
 use serde::{Deserialize, Serialize};
 use crate::dbcodes::{mongo, redis};
 use crate::codecs::namaste::{NamasteCodec, NamasteFilter, Language};
+use crate::codecs::icd::{IcdCodec, IcdFilter, IcdDiscipline};
+
+
+// ICD and NAMASTE both search endpoint
+pub async fn terminology_search(
+    query: web::Query<std::collections::HashMap<String, String>>
+) -> Result<HttpResponse> {
+    let search_term = query.get("search").cloned();
+    let limit = query.get("limit").and_then(|l| l.parse().ok());
+    let language = query.get("language")
+        .map(|l| match l.as_str() {
+            "hindi" => Language::Hindi,
+            "english" => Language::English,
+            _ => Language::Both,
+        })
+        .unwrap_or(Language::Both);
+    
+    let mut combined_results = Vec::new();
+    let mut namaste_count = 0;
+    let mut icd_count = 0;
+    
+    // Search NAMASTE codes
+    let namaste_codec = NamasteCodec::new();
+    let namaste_filter = NamasteFilter {
+        code: None,
+        language: language.clone(),
+        search_term: search_term.clone(),
+    };
+    
+    match namaste_codec.search_codes(namaste_filter, limit).await {
+        Ok(codes) => {
+            namaste_count = codes.len();
+            let formatted = namaste_codec.format_response(codes, language.clone());
+            for mut result in formatted {
+                // Add source identifier
+                result.as_object_mut().unwrap().insert("source".to_string(), serde_json::Value::String("NAMASTE".to_string()));
+                result.as_object_mut().unwrap().insert("system".to_string(), serde_json::Value::String("Ayurveda".to_string()));
+                combined_results.push(result);
+            }
+        },
+        Err(e) => eprintln!("NAMASTE search failed: {}", e),
+    }
+    
+    // Search ICD codes
+    let icd_codec = IcdCodec::new();
+    let icd_filter = IcdFilter {
+        discipline: None,
+        search_term: search_term.clone(),
+        parent_filter: None,
+    };
+    
+    match icd_codec.search_codes(icd_filter, limit).await {
+        Ok(codes) => {
+            icd_count = codes.len();
+            let formatted = icd_codec.format_response(codes);
+            for mut result in formatted {
+                // Add source identifier
+                result.as_object_mut().unwrap().insert("source".to_string(), serde_json::Value::String("ICD-11".to_string()));
+                result.as_object_mut().unwrap().insert("system".to_string(), serde_json::Value::String("Biomedicine".to_string()));
+                combined_results.push(result);
+            }
+        },
+        Err(e) => eprintln!("ICD search failed: {}", e),
+    }
+    
+    // Sort by relevance (optional - you can implement your own scoring)
+    // For now, just shuffle to mix NAMASTE and ICD results
+    
+    // Apply global limit if specified
+    if let Some(global_limit) = limit {
+        combined_results.truncate(global_limit);
+    }
+    
+    Ok(HttpResponse::Ok().json(serde_json::json!({
+        "service": "Combined Terminology Search",
+        "search_term": search_term,
+        "total_results": combined_results.len(),
+        "namaste_results": namaste_count,
+        "icd_results": icd_count,
+        "results": combined_results,
+        "timestamp": chrono::Utc::now().to_rfc3339()
+    })))
+}
+
+
+// ICD search endpoint
+
+pub async fn icd_all(
+    query: web::Query<std::collections::HashMap<String, String>>
+) -> Result<HttpResponse> {
+    let codec = IcdCodec::new();
+
+    match codec.get_all_codes(query.get("limit").and_then(|l| l.parse().ok())).await {
+        Ok(codes) => {
+            let formatted = codec.format_response(codes);
+            Ok(HttpResponse::Ok().json(serde_json::json!({
+                "service": "ICD-11 All Codes",
+                "total": formatted.len(),
+                "results": formatted,
+                "timestamp": chrono::Utc::now().to_rfc3339()
+            })))
+        },
+        Err(e) => Ok(HttpResponse::InternalServerError().json(ApiResponse {
+            service: "ICD-11 All Codes".to_string(),
+            status: "error".to_string(),
+            message: format!("Failed: {}", e),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+        }))
+    }
+}
+
+pub async fn icd_search(
+    query: web::Query<std::collections::HashMap<String, String>>
+) -> Result<HttpResponse> {
+    let codec = IcdCodec::new();
+    
+    let discipline = query.get("discipline")
+        .and_then(|d| match d.to_lowercase().as_str() {
+            "biomedicine" => Some(IcdDiscipline::Biomedicine),
+            "tm2" => Some(IcdDiscipline::TM2),
+            _ => None,
+        });
+    
+    let filter = IcdFilter {
+        discipline,
+        search_term: query.get("search").cloned(),
+        parent_filter: query.get("parent").cloned(),
+    };
+    
+    match codec.search_codes(filter, query.get("limit").and_then(|l| l.parse().ok())).await {
+        Ok(codes) => {
+            let formatted = codec.format_response(codes);
+            Ok(HttpResponse::Ok().json(serde_json::json!({
+                "service": "ICD-11 Search",
+                "total": formatted.len(),
+                "results": formatted,
+                "timestamp": chrono::Utc::now().to_rfc3339()
+            })))
+        },
+        Err(e) => Ok(HttpResponse::InternalServerError().json(ApiResponse {
+            service: "ICD-11 Search".to_string(),
+            status: "error".to_string(),
+            message: format!("Search failed: {}", e),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+        }))
+    }
+}
+
+// Get biomedicine codes
+pub async fn icd_biomedicine(
+    query: web::Query<std::collections::HashMap<String, String>>
+) -> Result<HttpResponse> {
+    let codec = IcdCodec::new();
+
+    match codec.get_biomedicine_codes(query.get("limit").and_then(|l| l.parse().ok())).await {
+        Ok(codes) => {
+            let formatted = codec.format_response(codes);
+            Ok(HttpResponse::Ok().json(serde_json::json!({
+                "service": "ICD-11 Biomedicine",
+                "discipline": "BIOMEDICINE",
+                "total": formatted.len(),
+                "results": formatted,
+                "timestamp": chrono::Utc::now().to_rfc3339()
+            })))
+        },
+        Err(e) => Ok(HttpResponse::InternalServerError().json(ApiResponse {
+            service: "ICD-11 Biomedicine".to_string(),
+            status: "error".to_string(),
+            message: format!("Failed: {}", e),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+        }))
+    }
+}
+
+// Get TM2 codes
+pub async fn icd_tm2(
+    query: web::Query<std::collections::HashMap<String, String>>
+) -> Result<HttpResponse> {
+    let codec = IcdCodec::new();
+
+    match codec.get_tm2_codes(query.get("limit").and_then(|l| l.parse().ok())).await {
+        Ok(codes) => {
+            let formatted = codec.format_response(codes);
+            Ok(HttpResponse::Ok().json(serde_json::json!({
+                "service": "ICD-11 Traditional Medicine",
+                "discipline": "TM2",
+                "total": formatted.len(),
+                "results": formatted,
+                "timestamp": chrono::Utc::now().to_rfc3339()
+            })))
+        },
+        Err(e) => Ok(HttpResponse::InternalServerError().json(ApiResponse {
+            service: "ICD-11 TM2".to_string(),
+            status: "error".to_string(),
+            message: format!("Failed: {}", e),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+        }))
+    }
+}
 
 // NAMASTE search endpoint
 pub async fn namaste_search(

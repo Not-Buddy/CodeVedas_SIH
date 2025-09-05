@@ -8,8 +8,8 @@ const Router = () => {
     <BrowserRouter>
       {/* <Navbar />  <-- Navbar here would keep it static for all pages.*/}
       <Routes>
-        <Route index element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
+        <Route index element={<Login />} />
+        <Route path="/home" element={<HomePage />} />
         {/* Add your pages in a Route component like these: */}
         {/* 
         <Route index element={<HomePage />} />

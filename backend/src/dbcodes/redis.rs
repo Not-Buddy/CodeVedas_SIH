@@ -1,4 +1,4 @@
-use redis::{Client, aio::ConnectionManager, AsyncCommands};
+use redis::{Client, aio::ConnectionManager};
 use tokio::sync::OnceCell;
 use serde::{Deserialize, Serialize};
 use std::env;
@@ -70,27 +70,6 @@ impl RedisClient {
                 error: Some(e.to_string()),
             },
         }
-    }
-    
-    // Basic Redis operations
-    pub async fn set(&self, key: &str, value: &str) -> Result<(), redis::RedisError> {
-        let mut conn = self.manager.clone();
-        conn.set(key, value).await
-    }
-    
-    pub async fn get(&self, key: &str) -> Result<Option<String>, redis::RedisError> {
-        let mut conn = self.manager.clone();
-        conn.get(key).await
-    }
-    
-    pub async fn del(&self, key: &str) -> Result<i32, redis::RedisError> {  // Fix: Proper Result syntax
-        let mut conn = self.manager.clone();
-        conn.del(key).await
-    }
-    
-    pub async fn exists(&self, key: &str) -> Result<bool, redis::RedisError> {
-        let mut conn = self.manager.clone();
-        conn.exists(key).await
     }
 }
 
