@@ -1,0 +1,51 @@
+.outer{
+    display: flex; 
+    flex-direction: column;
+    border: 2px solid #58D34A;
+    border-radius: 1em;
+    margin: 4em 0;
+    padding: 0 1em;
+    height: 18em;
+    justify-content: space-evenly;
+}
+
+.tags{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+
+.tags p{
+    border: 2px solid grey;
+    border-radius: 9em;
+    padding: 3px 10px;
+    margin: 0 5px;
+}
+
+.label{
+    font-size: 12px;
+    position: absolute;
+    margin-top: -15px;
+}
+
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+}
+
+.buttons button{
+    padding: 8px;
+    background: transparent;
+    border: 2px solid grey;
+    border-radius: 5px;
+    color: grey;
+    margin: 0.5em;
+    font-size: medium;
+}
+
+#add-button{
+    border: none;
+    color: white;
+    background-color: #58D34A;
+}
