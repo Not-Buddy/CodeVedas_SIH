@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
-use mongodb::bson::{doc, Document};
-use std::collections::HashMap;
+use mongodb::bson::{doc};
 use crate::dbcodes::mongo;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -25,6 +24,7 @@ pub struct NamasteCode {
     pub ontology_branches: Option<String>,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct NamasteFilter {
     pub code: Option<String>,
@@ -127,7 +127,6 @@ impl NamasteCodec {
     }
 }
 
-// You also need to define these enums that were missing:
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum NamasteDiscipline {
     Ayurveda,

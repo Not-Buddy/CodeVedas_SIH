@@ -44,6 +44,15 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
             web::scope("/terminology")
                 .route("/ayurveda", web::get().to(api::ayurveda_terminology))
         )
+        // ICD-11 search
+        .service(
+            web::scope("/icd")
+            .route("/search", web::get().to(api::icd_search))
+            .route("/all", web::get().to(api::icd_all))  // Add this for testing
+            .route("/biomedicine", web::get().to(api::icd_biomedicine))
+            .route("/tm2", web::get().to(api::icd_tm2))
+        )
+
         .service(
             web::scope("/namaste")
             .route("/search", web::get().to(api::namaste_search))
@@ -71,7 +80,7 @@ pub fn create_app() -> App<
         )
 }
 
-// Start the server
+//Start server
 pub async fn start_server() -> std::io::Result<()> {
     // Initialize logging
     env_logger::init();
@@ -93,20 +102,67 @@ pub async fn start_server() -> std::io::Result<()> {
     println!("📊 Server running on http://127.0.0.1:8080");
     println!("🏥 Health check: http://127.0.0.1:8080/health");
     println!();
-    println!("📋 Available endpoints:");
-    println!("   GET /health                    - Health check");
-    println!("   GET /gateway                   - API Gateway status");
-    println!("   GET /api                       - REST API status");
-    println!("   GET /services/*                - Backend services");
-    println!("   GET /core/*                    - Core components");
-    println!("   GET /data/mongodb              - MongoDB connection status");
-    println!("   GET /data/mongodb/collections  - List MongoDB collections");
-    println!("   GET /data/redis                - Redis connection status");
-    println!("   GET /external/*                - External APIs");
-    println!("   GET /terminology/ayurveda      - Ayurveda terminology database");
+    println!("📋 Available API Endpoints:");
+    
+    // Core System Endpoints
+    println!("   🔧 SYSTEM:");
+    println!("      GET  /health                     - Health check");
+    println!("      GET  /gateway                    - API Gateway & OAuth 2.0 status");
+    println!("      GET  /api                        - REST API server status");
+    
+    // Backend Services
+    println!("   🛠️  SERVICES:");
+    println!("      GET  /services/terminology       - Terminology service status");
+    println!("      GET  /services/mapping           - Mapping service status");
+    println!("      GET  /services/sync              - Sync service status");
+    println!("      GET  /services/audit             - Audit service status");
+    
+    // Core Components
+    println!("   🧠 CORE:");
+    println!("      GET  /core/fhir                  - FHIR R4 engine status");
+    println!("      GET  /core/vocabulary            - Vocabulary manager status");
+    println!("      GET  /core/translation           - Translation engine status");
+    
+    // Data Layer
+    println!("   💾 DATA:");
+    println!("      GET  /data/mongodb               - MongoDB connection status");
+    println!("      GET  /data/mongodb/collections   - List MongoDB collections");
+    println!("      GET  /data/redis                 - Redis cache status");
+    
+    // External APIs
+    println!("   🌐 EXTERNAL:");
+    println!("      GET  /external/who-icd11         - WHO ICD-11 API status");
+    println!("      GET  /external/namaste-csv       - NAMASTE CSV files status");
+    
+    // Terminology Services
+    println!("   📚 TERMINOLOGY:");
+    println!("      GET  /terminology/ayurveda       - Ayurveda terminology database");
+    
+    // NAMASTE Ayurveda Codes
+    println!("   🏥 NAMASTE (Ayurveda):");
+    println!("      GET  /namaste/search?search=term&limit=N&language=both|english|hindi");
+    println!("      GET  /namaste/all?limit=N&language=both|english|hindi");
+    
+    // ICD-11 Codes  
+    println!("   🩺 ICD-11:");
+    println!("      GET  /icd/search?search=term&limit=N&discipline=biomedicine|tm2&parent=url");
+    println!("      GET  /icd/all?limit=N             - All ICD-11 codes");
+    println!("      GET  /icd/biomedicine?limit=N     - ICD-11 Biomedicine codes");
+    println!("      GET  /icd/tm2?limit=N             - ICD-11 Traditional Medicine codes");
+    
+    println!();
+    println!("📝 Query Parameters:");
+    println!("   • search=<term>     - Search in titles, definitions, codes");
+    println!("   • limit=<number>    - Limit results (default: no limit)");
+    println!("   • language=<lang>   - Language filter for NAMASTE (both|english|hindi)");
+    println!("   • discipline=<type> - Discipline filter for ICD (biomedicine|tm2)");
+    println!("   • parent=<url>      - Filter by parent ICD code URL");
+    println!();
+    println!("🚀 Server ready for FHIR terminology requests!");
     
     HttpServer::new(|| create_app())
         .bind("127.0.0.1:8080")?
         .run()
         .await
 }
+
