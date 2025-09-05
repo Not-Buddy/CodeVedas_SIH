@@ -1,12 +1,6 @@
 import "./Results.css"
 
-const results = {
-    tags: ["TM2-1234","ICD-5678","RA","Rheumatoid Disease"],
-    head: "Amavata (Rheumatoid Arthritis)",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima animi porro aliquid hic nemo id, neque ea assumenda rem similique reprehenderit? Animi quae nam esse saepe commodi non impedit obcaecati."
-}
-
-const Results = () => {
+const Results = ({item}) => {
     return(
     <>
         <div className="outer">
@@ -14,27 +8,21 @@ const Results = () => {
                 <div>
                     <span className="label">NAMASTE</span>
                     <div>
-                    <p>{results.tags[0]}</p>
+                    <p>don't have lol</p>
                     </div>
                 </div>
 
                 <div>
                     <span className="label">ICD-11</span>
                     <div>
-                    <p>{results.tags[1]}</p>
+                    <p>{item.code}</p>
                     </div>
                 </div>
-
-                {results.tags.slice(2).map((tag, index) => {
-                    return(
-                    <p key={index}>{tag}</p>
-                    );
-                })}
             </div>
 
             <div className="text">
-                <h2>{results.head}</h2>
-                <p>{results.desc}</p>
+                <h2>{item.title}</h2>
+                <p>{item.definition || "No description available"}</p>
             </div>
 
             <div className="buttons">

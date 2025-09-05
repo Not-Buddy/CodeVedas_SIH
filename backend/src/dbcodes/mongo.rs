@@ -1,5 +1,5 @@
 use mongodb::{
-    bson::{doc, Document},
+    bson::{doc},
     options::{ClientOptions, ServerApi, ServerApiVersion},
     Client, Database,
 };
@@ -137,68 +137,10 @@ impl MongoClient {
         }
     }
     
-    // Get database instance
-    pub fn get_database(&self) -> &Database {
-        &self.database
-    }
-    
-    // Insert a document
-    pub async fn insert_document<T>(
-        &self,
-        collection_name: &str,
-        document: &T,
-    ) -> Result<String, mongodb::error::Error>
-    where
-        T: Serialize,
-    {
-        let collection = self.database.collection::<T>(collection_name);
-        let insert_result = collection.insert_one(document, None).await?;
-        Ok(insert_result.inserted_id.to_string())
-    }
-    
-    // Find documents
-    pub async fn find_documents<T>(
-        &self,
-        collection_name: &str,
-        filter: Option<Document>,
-    ) -> Result<Vec<T>, mongodb::error::Error>
-    where
-        T: for<'de> Deserialize<'de> + Unpin + Send + Sync,
-    {
-        let collection = self.database.collection::<T>(collection_name);
-        let filter = filter.unwrap_or_else(|| doc! {});
-        
-        let mut cursor = collection.find(filter, None).await?;
-        let mut results = Vec::new();
-        
-        while cursor.advance().await? {
-            results.push(cursor.deserialize_current()?);
-        }
-        
-        Ok(results)
-    }
-    
-    // Count documents in a collection
-    pub async fn count_documents(
-        &self,
-        collection_name: &str,
-        filter: Option<Document>,
-    ) -> Result<u64, mongodb::error::Error> {
-        let collection = self.database.collection::<Document>(collection_name);
-        let filter = filter.unwrap_or_else(|| doc! {});
-        collection.count_documents(filter, None).await
-    }
-    
     // List all collections
     pub async fn list_collections(&self) -> Result<Vec<String>, mongodb::error::Error> {
         let collections = self.database.list_collection_names(None).await?;
         Ok(collections)
-    }
-    
-    // Drop a collection (be careful!)
-    pub async fn drop_collection(&self, collection_name: &str) -> Result<(), mongodb::error::Error> {
-        let collection = self.database.collection::<Document>(collection_name);
-        collection.drop(None).await
     }
 }
 
