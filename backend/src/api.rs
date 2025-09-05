@@ -5,6 +5,87 @@ use crate::codecs::namaste::{NamasteCodec, NamasteFilter, Language};
 use crate::codecs::icd::{IcdCodec, IcdFilter, IcdDiscipline};
 
 
+// ICD and NAMASTE both search endpoint
+pub async fn terminology_search(
+    query: web::Query<std::collections::HashMap<String, String>>
+) -> Result<HttpResponse> {
+    let search_term = query.get("search").cloned();
+    let limit = query.get("limit").and_then(|l| l.parse().ok());
+    let language = query.get("language")
+        .map(|l| match l.as_str() {
+            "hindi" => Language::Hindi,
+            "english" => Language::English,
+            _ => Language::Both,
+        })
+        .unwrap_or(Language::Both);
+    
+    let mut combined_results = Vec::new();
+    let mut namaste_count = 0;
+    let mut icd_count = 0;
+    
+    // Search NAMASTE codes
+    let namaste_codec = NamasteCodec::new();
+    let namaste_filter = NamasteFilter {
+        code: None,
+        language: language.clone(),
+        search_term: search_term.clone(),
+    };
+    
+    match namaste_codec.search_codes(namaste_filter, limit).await {
+        Ok(codes) => {
+            namaste_count = codes.len();
+            let formatted = namaste_codec.format_response(codes, language.clone());
+            for mut result in formatted {
+                // Add source identifier
+                result.as_object_mut().unwrap().insert("source".to_string(), serde_json::Value::String("NAMASTE".to_string()));
+                result.as_object_mut().unwrap().insert("system".to_string(), serde_json::Value::String("Ayurveda".to_string()));
+                combined_results.push(result);
+            }
+        },
+        Err(e) => eprintln!("NAMASTE search failed: {}", e),
+    }
+    
+    // Search ICD codes
+    let icd_codec = IcdCodec::new();
+    let icd_filter = IcdFilter {
+        discipline: None,
+        search_term: search_term.clone(),
+        parent_filter: None,
+    };
+    
+    match icd_codec.search_codes(icd_filter, limit).await {
+        Ok(codes) => {
+            icd_count = codes.len();
+            let formatted = icd_codec.format_response(codes);
+            for mut result in formatted {
+                // Add source identifier
+                result.as_object_mut().unwrap().insert("source".to_string(), serde_json::Value::String("ICD-11".to_string()));
+                result.as_object_mut().unwrap().insert("system".to_string(), serde_json::Value::String("Biomedicine".to_string()));
+                combined_results.push(result);
+            }
+        },
+        Err(e) => eprintln!("ICD search failed: {}", e),
+    }
+    
+    // Sort by relevance (optional - you can implement your own scoring)
+    // For now, just shuffle to mix NAMASTE and ICD results
+    
+    // Apply global limit if specified
+    if let Some(global_limit) = limit {
+        combined_results.truncate(global_limit);
+    }
+    
+    Ok(HttpResponse::Ok().json(serde_json::json!({
+        "service": "Combined Terminology Search",
+        "search_term": search_term,
+        "total_results": combined_results.len(),
+        "namaste_results": namaste_count,
+        "icd_results": icd_count,
+        "results": combined_results,
+        "timestamp": chrono::Utc::now().to_rfc3339()
+    })))
+}
+
 
 // ICD search endpoint
 

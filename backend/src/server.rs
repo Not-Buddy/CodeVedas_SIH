@@ -12,6 +12,7 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
         .route("/gateway", web::get().to(api::api_gateway))
         // Main API
         .route("/api", web::get().to(api::rest_api))
+        
         // Backend Services
         .service(
             web::scope("/services")
@@ -20,6 +21,7 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
                 .route("/sync", web::get().to(api::sync_service))
                 .route("/audit", web::get().to(api::audit_service))
         )
+
         // Core Components
         .service(
             web::scope("/core")
@@ -27,6 +29,7 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
                 .route("/vocabulary", web::get().to(api::vocabulary_manager))
                 .route("/translation", web::get().to(api::translation_engine))
         )
+
         // Data Layer
         .service(
             web::scope("/data")
@@ -34,33 +37,37 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
                 .route("/mongodb/collections", web::get().to(api::mongodb_collections))
                 .route("/redis", web::get().to(api::redis_status))
         )
+
         // External APIs
         .service(
             web::scope("/external")
                 .route("/who-icd11", web::get().to(api::who_api))
                 .route("/namaste-csv", web::get().to(api::namaste_csv))
         )
-        // Ayurveda
+
+        // Terminology Services - FIX: Move the combined search here
         .service(
             web::scope("/terminology")
                 .route("/ayurveda", web::get().to(api::ayurveda_terminology))
+                .route("/search", web::get().to(api::terminology_search)) // CORRECT!
         )
+
         // ICD-11 search
         .service(
             web::scope("/icd")
-            .route("/search", web::get().to(api::icd_search))
-            .route("/all", web::get().to(api::icd_all))  // Add this for testing
-            .route("/biomedicine", web::get().to(api::icd_biomedicine))
-            .route("/tm2", web::get().to(api::icd_tm2))
+                .route("/search", web::get().to(api::icd_search))
+                .route("/all", web::get().to(api::icd_all))
+                .route("/biomedicine", web::get().to(api::icd_biomedicine))
+                .route("/tm2", web::get().to(api::icd_tm2))
         )
-
+        
         .service(
             web::scope("/namaste")
-            .route("/search", web::get().to(api::namaste_search))
-            .route("/all", web::get().to(api::namaste_all))
+                .route("/search", web::get().to(api::namaste_search))
+                .route("/all", web::get().to(api::namaste_all))
         );
-
 }
+
 
 // Create the application
 pub fn create_app() -> App<
@@ -116,6 +123,8 @@ pub async fn start_server() -> std::io::Result<()> {
     println!("🏥 Health check: http://127.0.0.1:8080/health");
     println!();
     println!("📋 Available API Endpoints:");
+
+
     
     // Core System Endpoints
     println!("   🔧 SYSTEM:");
@@ -150,7 +159,8 @@ pub async fn start_server() -> std::io::Result<()> {
     // Terminology Services
     println!("   📚 TERMINOLOGY:");
     println!("      GET  /terminology/ayurveda       - Ayurveda terminology database");
-    
+    println!("      GET  /terminology/search          - Combined NAMASTE + ICD search");
+
     // NAMASTE Ayurveda Codes
     println!("   🏥 NAMASTE (Ayurveda):");
     println!("      GET  /namaste/search?search=term&limit=N&language=both|english|hindi");
@@ -172,6 +182,8 @@ pub async fn start_server() -> std::io::Result<()> {
     println!("   • parent=<url>      - Filter by parent ICD code URL");
     println!();
     println!("🚀 Server ready for FHIR terminology requests!");
+
+    
     
     HttpServer::new(|| create_app())
         .bind("127.0.0.1:8080")?
