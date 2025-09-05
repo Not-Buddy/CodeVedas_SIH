@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/navbar/Navbar.jsx";
 import Results from "../components/results/Results.jsx";
+import SearchBar from "../components/gobalsearch/searchbar.jsx";
 
 const HomePage = () => {
     return(
@@ -8,6 +9,7 @@ const HomePage = () => {
             <Navbar />
 
             <h1>Welcome to the SIH Project. This would be the home page.</h1>
+            <SearchBar />
             <div style={{display: "flex", flexDirection: "row"}}>
                 <div className="left" style={{display: "flex", flexDirection: "column", width: "60%"}}>
                     <Results />
