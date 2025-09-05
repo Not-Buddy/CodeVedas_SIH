@@ -29,8 +29,8 @@ const HomePage = () => {
         setError(null);
         try {
             const response = await axios.get(apiUrl);
-            console.log(response.data);
-            setSearchResults(response.data);
+            console.log(response.data.results);
+            setSearchResults(response.data.results);
         } catch (err) {
             setError('Failed to fetch data.');
             console.error(err);
@@ -49,7 +49,9 @@ const HomePage = () => {
             <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
             <div style={{display: "flex", flexDirection: "row"}}>
                 <div className="left" style={{display: "flex", flexDirection: "column", width: "60%"}}>
-                    <Results />
+                    {searchResults.map((result) => (
+                        <Results key={result.id} item={result} />
+                    ))}
                 </div>
                 <div className="right" style={{display: "flex", flexDirection: "row", width: "40%"}}>
 
