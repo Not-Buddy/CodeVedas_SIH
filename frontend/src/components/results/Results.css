@@ -1,5 +1,5 @@
 .outer {
-    border: 2px solid #58D34A;
+    border: 2px solid #57D24B;
     border-radius: 12px;
     padding: 1.25rem;
     background: white;
@@ -53,7 +53,7 @@
   
   .tags > div:nth-child(2) p {
     color: #34a853;
-    border-color: #34a853;
+    border-color: #57D24B;
     background: transparent;
     box-shadow: 0 0 8px rgba(52, 168, 83, 0.3);
     margin-top: 0.5rem;
@@ -97,17 +97,17 @@
   }
   
   .buttons button:hover {
-    border-color: #58D34A;
+    border-color: #57D24B;
   }
   
   .buttons button#add-button {
-    background: #58D34A;
+    background: #57D24B;
     color: white;
-    border-color: #58D34A;
+    border-color: #57D24B;
   }
   
   .buttons button#add-button:hover {
-    background: #48bb78;
+    background: #57D24B;
   }
   
   /* Tablet */

@@ -1,13 +1,13 @@
 nav{
     display: flex;
     padding: 3px;
-    border: 2px solid #58D34A;
+    border: 2px solid #57D24B;
     border-radius: 3em;
     margin: 2em 0;
 }
 
 nav.h2{
-    color: #58D34A;
+    color: #57D24B;
     margin: 0;
 }
 
