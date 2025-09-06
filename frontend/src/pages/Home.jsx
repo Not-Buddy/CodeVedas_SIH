@@ -54,7 +54,8 @@ const HomePage = () => {
     };
 
     return(
-        <div style={{margin: "0 7em"}}>
+        // MODIFICATION: Changed 'margin' to 'padding' for better page width control.
+        <div style={{padding: "0 2rem"}}>
             <Navbar />
             <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
             <div style={{display: "flex", flexDirection: "row"}}>
