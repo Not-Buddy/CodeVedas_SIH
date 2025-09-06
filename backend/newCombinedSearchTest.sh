@@ -19,3 +19,7 @@ curl "http://127.0.0.1:8080/terminology/search?search=pain"
 # Search for specific ICD code
 curl "http://127.0.0.1:8080/terminology/search?search=1A00&limit=3"
 
+#Returns both 
+curl "http://127.0.0.1:8080/terminology/search?search=VB&limit=5"
+
+
