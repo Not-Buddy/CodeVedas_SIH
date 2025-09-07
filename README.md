@@ -43,3 +43,5 @@ db.icd11_entities.createIndex({'code': 1, 'isLeaf': 1});
 print('Indexes created successfully');
 "
 ```
+
+sudo systemctl start mongod
