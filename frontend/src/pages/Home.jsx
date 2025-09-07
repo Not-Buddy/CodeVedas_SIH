@@ -78,7 +78,7 @@ const HomePage = () => {
         <div style={{margin: "0 7em", height: "100vh", display: "flex", flexDirection: "column"}}>
             <Navbar />
             <div style={{display: "flex", flexDirection: "row", flexGrow: 1, overflow: "hidden"}}>
-                <div className="left" style={{display: "flex", flexDirection: "column", width: "60%"}}>
+                <div className="left" style={{display: "flex", flexDirection: "column", width: "70%"}}>
                     <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
                     <div className="results-container" style={{flexGrow: 1, overflowY: "auto"}}>
                         {!loading && searchResults && searchResults.length === 0 && (
@@ -91,7 +91,7 @@ const HomePage = () => {
                         )}
                     </div>
                 </div>
-                <div className="right" style={{display: "flex", flexDirection: "row", width: "40%", justifyContent: "center"}}>
+                <div className="right" style={{display: "flex", flexDirection: "row", width: "30%", justifyContent: "flex-end"}}>
                     <Composer items={composerItems} onRemove={handleRemoveFromComposer}/>
                 </div>
 
