@@ -216,3 +216,34 @@
   transform: scale(0.98);
   background-color: #f0f0f0; /* slightly darker when pressing */
 }
+
+/* --- UI Cohesive Blue Scrollbar --- */
+
+/* This targets the scrollbar in WebKit browsers (Chrome, Safari, Edge) */
+.results-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* This targets the track (the background of the scrollbar) */
+.results-container::-webkit-scrollbar-track {
+  background: #eaf1f8; /* A very light, cool blue-grey for the track */
+  border-radius: 10px;
+}
+
+/* This targets the draggable scrolling handle (the thumb) */
+.results-container::-webkit-scrollbar-thumb {
+  background-color: #4a90e2; /* A professional blue inspired by the UI buttons */
+  border-radius: 10px;
+  border: 2px solid #eaf1f8; /* Creates a padding effect around the thumb */
+}
+
+/* Changes the thumb color when you hover over it */
+.results-container::-webkit-scrollbar-thumb:hover {
+  background-color: #357ABD; /* A slightly darker blue for the hover state */
+}
+
+/* --- For Firefox --- */
+.results-container {
+  scrollbar-width: auto;
+  scrollbar-color: #4a90e2 #eaf1f8; /* Sets thumb and track colors for Firefox */
+}
