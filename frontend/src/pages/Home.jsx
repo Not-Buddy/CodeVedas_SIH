@@ -77,7 +77,7 @@ const HomePage = () => {
         // ^ No keep the margin please T-T
         <div style={{margin: "0 7em", height: "100vh", display: "flex", flexDirection: "column"}}>
             <Navbar />
-            <div style={{display: "flex", flexDirection: "row", flexGrow: 1, overflow: "hidden"}}>
+            <div style={{display: "flex", flexDirection: "row", flexGrow: 1, overflow: "hidden", gap: "2rem"}}> 
                 <div className="left" style={{display: "flex", flexDirection: "column", width: "70%"}}>
                     <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
                     <div className="results-container" style={{flexGrow: 1, overflowY: "auto"}}>
