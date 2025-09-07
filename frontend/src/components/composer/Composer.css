@@ -1,6 +1,10 @@
 .composer-wrapper {
   width: 100%;
   max-width: 400px;
+  /* MODIFICATION: Make the wrapper a flex column that fills its container's height */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .composer-title {
@@ -8,6 +12,8 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 10px;
+  /* MODIFICATION: Prevent this part from shrinking */
+  flex-shrink: 0;
 }
 
 .green-line {
@@ -30,18 +36,21 @@
   border: 2px solid #57D24B;
   border-radius: 12px;
   font-family: 'Arial', sans-serif;
-  height: 550px;
   display: flex;
   flex-direction: column;
+  /* MODIFICATION: Remove fixed height and allow this section to grow and fill available space */
+  flex-grow: 1;
+  overflow: hidden; /* This is crucial to contain the scrolling list */
 }
 
 .composer-content {
   flex: 1;
-  padding: 0 20px;
+  padding: 20px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .empty-state {
@@ -103,6 +112,8 @@
 .composer-footer {
   padding: 20px;
   position: relative;
+  /*Prevent this part from shrinking */
+  flex-shrink: 0;
 }
 
 .download-btn {
@@ -123,7 +134,7 @@
 }
 
 .download-btn:hover {
-  background-color: #57D24B;
+  background-color: #4dbf42;
 }
 
 .download-icon {
@@ -171,6 +182,74 @@
   from {
     opacity: 0;
     transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- STYLES FOR POPULATED COMPOSER LIST --- */
+.composer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.composer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.item-code {
+  font-size: 12px;
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.2s ease;
+}
+
+.remove-btn:hover {
+  color: #ef4444;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
   }
   to {
     opacity: 1;
