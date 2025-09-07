@@ -20,7 +20,8 @@
   
   .search-input {
     width: 100%;
-    padding: 12px 16px;
+    /* MODIFICATION: Added padding-right to make space for the button */
+    padding: 12px 45px 12px 16px;
     border: 2px solid #57D24B;
     border-radius: 25px;
     font-size: 14px;
@@ -29,6 +30,30 @@
     box-sizing: border-box;
     outline: none;
     transition: border-color 0.2s ease;
+  }
+
+  /* MODIFICATION: Added styles for the new search button */
+  .search-submit-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .search-submit-btn svg {
+    stroke: #a0aec0;
+    transition: stroke 0.2s ease;
+  }
+  
+  .search-submit-btn:hover svg {
+    stroke: #2d3748;
   }
   
   .search-input::placeholder {
