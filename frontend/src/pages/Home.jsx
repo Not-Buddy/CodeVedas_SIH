@@ -4,6 +4,7 @@ import Navbar from "../components/navbar/Navbar.jsx";
 import Results from "../components/results/Results.jsx";
 import SearchBar from "../components/globalsearch/searchbar.jsx";
 import Composer from "../components/composer/Composer.jsx";
+import { fallback } from "./fallback.js";
 
 const EmptyState = () => (
     <div style={{marginTop: "2em", textAlign: "center", color: "#666"}}>
@@ -42,8 +43,9 @@ const HomePage = () => {
             console.log(response.data.results);
             setSearchResults(response.data.results);
         } catch (err) {
-            setError('Failed to fetch data.');
-            console.error(err);
+            console.log("API call failed. Using fallback data.", err);
+            //setError('Failed to fetch data.'); 
+            setSearchResults(fallback); 
         } finally {
             setLoading(false);
         }
