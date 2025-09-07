@@ -74,8 +74,12 @@ const SearchBar = ({ onSubmit, onClear }) => {
 
   return (
     <div className="global-search-container">
-      <h2 className="search-title">Global Search</h2>
-      
+      <div style={{display: "flex", flexDirection: "row"}}>
+        {/* this one class 'green-line' is in composer.css */}
+        <div className="green-line"></div>
+        <h2 className="search-title">Global Search</h2>
+      </div>
+
       <form className="search-input-container" onSubmit={handleSubmit}>
         <input
           type="text"

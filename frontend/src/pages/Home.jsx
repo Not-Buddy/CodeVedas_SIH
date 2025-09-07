@@ -9,7 +9,6 @@ const EmptyState = () => (
     <div style={{marginTop: "2em", textAlign: "center", color: "#666"}}>
         <h2>No Results Found</h2>
         <p>We couldn't find any matches for your search. Please try a different term.</p>
-        
     </div>
 );
 
@@ -55,19 +54,22 @@ const HomePage = () => {
 
     return(
         // MODIFICATION: Changed 'margin' to 'padding' for better page width control.
-        <div style={{padding: "0 2rem"}}>
+        // ^ No keep the margin please T-T
+        <div style={{margin: "0 7em", height: "100vh", display: "flex", flexDirection: "column"}}>
             <Navbar />
-            <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
-            <div style={{display: "flex", flexDirection: "row"}}>
+            <div style={{display: "flex", flexDirection: "row", flexGrow: 1, overflow: "hidden"}}>
                 <div className="left" style={{display: "flex", flexDirection: "column", width: "60%"}}>
-                    {!loading && searchResults && searchResults.length === 0 && (
-                        <EmptyState />
-                    )}
-                    {!loading && searchResults && searchResults.length > 0 && (
-                        searchResults.map((result) => (
-                            <Results key={result.id} item={result} />
-                        ))
-                    )}
+                    <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
+                    <div className="results-container" style={{flexGrow: 1, overflowY: "auto"}}>
+                        {!loading && searchResults && searchResults.length === 0 && (
+                            <EmptyState />
+                        )}
+                        {!loading && searchResults && searchResults.length > 0 && (
+                            searchResults.map((result) => (
+                                <Results key={result.id} item={result} />
+                            ))
+                        )}
+                    </div>
                 </div>
                 <div className="right" style={{display: "flex", flexDirection: "row", width: "40%", justifyContent: "center"}}>
                     <Composer />
