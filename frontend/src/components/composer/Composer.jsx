@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './Composer.css';
 
-const Composer = () => {
-  const [composerItems, setComposerItems] = useState([]);
+const Composer = ({ items, onRemove }) => {
   const [showDownloadOptions, setShowDownloadOptions] = useState(false);
 
   const handleDownload = (format) => {
@@ -24,18 +23,37 @@ const Composer = () => {
       
       <div className="composer-container">
         <div className="composer-content">
-          <div className="empty-state">
-            <div className="empty-icon">
-              <div className="hamburger-lines">
-                <div className="line"></div>
-                <div className="line"></div>
-                <div className="line"></div>
+            {/* Empty content */}
+            {items.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-icon">
+                  <div className="hamburger-lines">
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                </div>
+                  <div className="plus-icon">+</div>
+                </div>
+                <p className="empty-text">
+                  Your List is Empty. Select Codes From Search Results.
+                </p>
               </div>
-              <div className="plus-icon">+</div>
-            </div>
-            <p className="empty-text">
-              Your List is Empty Select Codes From Search Results.
-            </p>
+            ) : (
+              /* actually has content */
+              <ul className="composer-list">
+                {items.map(item => (
+                  <li key={item.id} className="composer-item">
+                    <div className="item-details">
+                      <span className="item-title">{item.display || item.title}</span>
+                      <span className="item-code">{item.nam_code || 'N/A'}</span>
+                    </div>
+                    <button onClick={() => onRemove(item)} className="remove-btn">
+                      &times;
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
@@ -75,7 +93,6 @@ const Composer = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 

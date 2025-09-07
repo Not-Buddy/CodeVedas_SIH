@@ -16,6 +16,7 @@ const HomePage = () => {
     const [searchResults, setSearchResults] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [composerItems, setComposerItems] = useState([]);
 
     //curl "http://127.0.0.1:8080/terminology/search?search=fever&limit=10"
     // async function to call api
@@ -52,6 +53,23 @@ const HomePage = () => {
         setSearchResults(null);
     };
 
+    // Composer functions
+    const handleAddToComposer = (itemToAdd) => {
+        // Prevent adding duplicates
+        console.log(itemToAdd);
+        if (!composerItems.some(item => (item.nam_code === itemToAdd.nam_code && item.icd_code === itemToAdd.icd_code))) {
+            setComposerItems(prevItems => [...prevItems, itemToAdd]);
+        }
+    };
+
+    const handleRemoveFromComposer = (itemToRemove) => {
+    // remove by nam_code / fallback to icd_code if nam_code is null
+    const keyToRemove = itemToRemove.nam_code != null ? 'nam_code' : 'icd_code';
+    const valueToRemove = itemToRemove.nam_code != null ? itemToRemove.nam_code : itemToRemove.icd_code;
+
+    setComposerItems(prevItems => prevItems.filter(item => item[keyToRemove] !== valueToRemove));
+};
+
     return(
         // MODIFICATION: Changed 'margin' to 'padding' for better page width control.
         // ^ No keep the margin please T-T
@@ -66,13 +84,13 @@ const HomePage = () => {
                         )}
                         {!loading && searchResults && searchResults.length > 0 && (
                             searchResults.map((result) => (
-                                <Results key={result.id} item={result} />
+                                <Results key={result.id} item={result} handleAddToComposer={handleAddToComposer}/>
                             ))
                         )}
                     </div>
                 </div>
                 <div className="right" style={{display: "flex", flexDirection: "row", width: "40%", justifyContent: "center"}}>
-                    <Composer />
+                    <Composer items={composerItems} onRemove={handleRemoveFromComposer}/>
                 </div>
 
             </div>
