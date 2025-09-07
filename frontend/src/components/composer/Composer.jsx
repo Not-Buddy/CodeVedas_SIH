@@ -41,17 +41,23 @@ const Composer = ({ items, onRemove }) => {
             ) : (
               /* actually has content */
               <ul className="composer-list">
-                {items.map(item => (
-                  <li key={item.id} className="composer-item">
-                    <div className="item-details">
-                      <span className="item-title">{item.display || item.title}</span>
-                      <span className="item-code">{item.nam_code || 'N/A'}</span>
-                    </div>
-                    <button onClick={() => onRemove(item)} className="remove-btn">
-                      &times;
-                    </button>
-                  </li>
-                ))}
+                {items.map(item => {
+                  const displayCode = [item.icd_code, item.nam_code].filter(Boolean).join(' / ');
+
+                  return (
+                    <li key={item.id} className="composer-item">
+                      <div className="item-details">
+                        <span className="item-title">{item.display || item.title}</span>
+                        <span className="item-code">
+                          {displayCode || 'N/A'}
+                        </span>
+                      </div>
+                      <button onClick={() => onRemove(item)} className="remove-btn">
+                        &times;
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>

@@ -213,6 +213,19 @@
   animation: fadeIn 0.3s ease-out;
 }
 
+.composer-item:hover {
+  background-color: #f3f4f6; /* A slightly darker grey on hover */
+  border-color: #d1d5db;
+}
+
+.remove-btn {
+  color: #d1d5db; /* Make the 'x' lighter by default */
+}
+
+.composer-item:hover .remove-btn {
+  color: #ef4444; /* Make the 'x' red on hover */
+}
+
 .item-details {
   display: flex;
   flex-direction: column;
