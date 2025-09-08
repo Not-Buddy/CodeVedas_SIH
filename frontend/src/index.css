@@ -1,0 +1,11 @@
+/* Light theme (default) */
+body {
+    background-color: #f8fdf8;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme */
+body.dark-theme {
+    background-color: #1a202c;
+    color: #e2e8f0;
+}

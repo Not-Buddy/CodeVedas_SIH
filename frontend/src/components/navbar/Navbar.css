@@ -6,12 +6,12 @@ nav{
     margin: 2em 0;
 }
 
-nav.h2{
+nav h2{
     color: #57D24B;
     margin: 0;
 }
 
-nav.p{
+nav p{
     font-size: small;
     margin: 0;
 }
@@ -21,6 +21,7 @@ nav.p{
     width:50%;
     flex: row wrap;
     justify-content: flex-start;
+    align-items: center;
 }
 
 .left-text{
@@ -31,6 +32,7 @@ nav.p{
 .right{
     display: flex;
     justify-content: flex-end;
+    align-items: center; 
     width: 50%;
 }
 
@@ -45,4 +47,79 @@ nav.p{
 
 #who{
     margin-left: -1em;
+}
+
+/* --- MODIFICATION: Updated Styles for the Theme Toggle Switch --- */
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  /* Made the switch smaller */
+  width: 95px; 
+  height: 30px;
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e5e7eb; /* Light grey track for light mode */
+  border-radius: 30px;
+  transition: .4s;
+  display: flex;
+  align-items: center;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  /* Adjusted thumb size */
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #57D24B; /* Green thumb */
+  border-radius: 50%;
+  transition: .4s;
+}
+
+.switch-text {
+  width: 100%;
+  padding: 0 10px;
+  font-size: 9px;
+  font-weight: bold;
+  color: #6b7280; /* Darker text for light mode */
+  user-select: none;
+  text-align: right; /* Text on the right for light mode */
+}
+
+/* --- Styles for when the switch is ON (Dark Mode) --- */
+
+input:checked + .slider {
+    background-color: #3e4551; /* Dark track for dark mode */
+}
+
+input:checked + .slider:before {
+  transform: translateX(65px); /* Adjusted travel distance for smaller size */
+}
+
+input:checked + .slider .switch-text {
+    color: #a0aec0; /* Lighter text for dark mode */
+    text-align: left; /* Text on the left for dark mode */
+}
+
+
+/* --- Dark Theme Styles for Navbar --- */
+body.dark-theme nav p {
+    color: #a0aec0;
 }

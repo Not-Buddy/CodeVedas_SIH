@@ -209,3 +209,23 @@
       transform: translateY(0);
     }
   }
+
+  /* --- Dark Theme Styles --- */
+body.dark-theme .search-title {
+  color: #cbd5e0;
+}
+body.dark-theme .search-input {
+  background-color: #2d3748;
+  color: #e2e8f0;
+  border-color: #48bb78;
+}
+body.dark-theme .search-input::placeholder {
+  color: #718096;
+}
+body.dark-theme .clear-all-btn {
+  color: #a0aec0;
+}
+body.dark-theme .clear-all-btn:hover {
+  color: #e2e8f0;
+  background-color: #2d3748;
+}

@@ -247,3 +247,39 @@
   scrollbar-width: auto;
   scrollbar-color: #4a90e2 #eaf1f8; /* Sets thumb and track colors for Firefox */
 }
+
+/* --- Dark Theme Styles --- */
+body.dark-theme .outer {
+  background-color: #2d3748;
+  border-color: #4a5568;
+}
+body.dark-theme .outer:hover {
+  background-color: #4a5568;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+body.dark-theme .label,
+body.dark-theme .tags p {
+  background-color: #2d3748;
+  color: #a0aec0;
+}
+body.dark-theme .text h2 {
+  color: #e2e8f0;
+}
+body.dark-theme .text p {
+  color: #cbd5e0;
+}
+body.dark-theme .buttons button {
+    background-color: #4a5568;
+    color: #e2e8f0;
+    border-color: #718096;
+}
+body.dark-theme .buttons button#add-button {
+    background: #48bb78;
+    border-color: #48bb78;
+    color: #1a202c;
+}
+body.dark-theme .buttons button:disabled {
+    background: #4a5568;
+    color: #718096;
+    opacity: 0.5;
+}

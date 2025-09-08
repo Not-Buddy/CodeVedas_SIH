@@ -446,3 +446,45 @@
   height: auto;
   margin-left: 20px;
 }
+
+/* --- Dark Theme Styles --- */
+body.dark-theme .composer-title h2 {
+  color: #cbd5e0;
+}
+body.dark-theme .composer-container {
+  background: #2d3748;
+  border-color: #48bb78;
+}
+body.dark-theme .patient-info-btn {
+    background-color: #2d3748;
+    border-color: #48bb78;
+    color: #48bb78;
+}
+body.dark-theme .patient-info-display {
+    background-color: #2d3748;
+    border-color: #48bb78;
+}
+body.dark-theme .patient-info-display h4 {
+    color: #48bb78;
+}
+body.dark-theme .patient-info-display p,
+body.dark-theme .clear-patient-info {
+    color: #cbd5e0;
+}
+body.dark-theme .empty-text {
+  color: #a0aec0;
+}
+body.dark-theme .composer-item {
+  background-color: #4a5568;
+  border-color: #718096;
+}
+body.dark-theme .item-title {
+  color: #e2e8f0;
+}
+body.dark-theme .item-code {
+  color: #cbd5e0;
+}
+body.dark-theme .download-btn:disabled {
+    background-color: #57D24B;
+    opacity: 0.6;
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Navbar.css"
 
-const Navbar = () => {
+const Navbar = ({ isDarkMode, onToggleTheme }) => {
     return(
         <nav>
             <div className="left">
@@ -12,7 +12,22 @@ const Navbar = () => {
                 </div>
             </div>
             <div className="right">
-                    <img id="ayush" src="/assets/MoA_logo.png" alt="Ministry  of Ayush logo" width={70} height={70} />
+                <label className="theme-switch" htmlFor="theme-toggle-checkbox">
+                  <input
+                    type="checkbox"
+                    id="theme-toggle-checkbox"
+                    checked={isDarkMode}
+                    onChange={onToggleTheme}
+                  />
+                  <div className="slider">
+                    {/* MODIFICATION: Text now shows the current mode */}
+                    <div className="switch-text">
+                      {isDarkMode ? 'DARK MODE' : 'LIGHT MODE'}
+                    </div>
+                  </div>
+                </label>
+
+                <img id="ayush" src="/assets/MoA_logo.png" alt="Ministry of Ayush logo" width={70} height={70} />
                 <img id="who" src="/assets/WHO_logo.png" alt="WHO logo" width={70} height={70} />
             </div>
         </nav>

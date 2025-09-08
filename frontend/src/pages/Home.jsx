@@ -1,4 +1,4 @@
-import {useState, React} from "react";
+import {useState, useEffect, React} from "react"; // MODIFICATION: Imported useEffect
 import  axios from 'axios';
 import Navbar from "../components/navbar/Navbar.jsx";
 import Results from "../components/results/Results.jsx";
@@ -19,8 +19,22 @@ const HomePage = () => {
     const [error, setError] = useState(null);
     const [composerItems, setComposerItems] = useState([]);
 
-    //curl "http://127.0.0.1:8080/terminology/search?search=fever&limit=10"
-    // async function to call api
+    // MODIFICATION: Added state to manage the dark theme
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    // MODIFICATION: This effect adds or removes the 'dark-theme' class from the body
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+    }, [isDarkMode]);
+
+    const toggleTheme = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
+
     const handleSearchSubmit = async (searchData) => {
         const { query, filters } = searchData;
         
@@ -70,13 +84,13 @@ const HomePage = () => {
     const valueToRemove = itemToRemove.nam_code != null ? itemToRemove.nam_code : itemToRemove.icd_code;
 
     setComposerItems(prevItems => prevItems.filter(item => item[keyToRemove] !== valueToRemove));
-};
+    };
 
     return(
-        // MODIFICATION: Changed 'margin' to 'padding' for better page width control.
-        // ^ No keep the margin please T-T
         <div style={{margin: "0 7em", height: "100vh", display: "flex", flexDirection: "column"}}>
-            <Navbar />
+            {/* MODIFICATION: Pass theme state and toggle function to Navbar */}
+            <Navbar isDarkMode={isDarkMode} onToggleTheme={toggleTheme} />
+
             <div style={{display: "flex", flexDirection: "row", flexGrow: 1, overflow: "hidden", gap: "2rem"}}> 
                 <div className="left" style={{display: "flex", flexDirection: "column", width: "70%"}}>
                     <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
