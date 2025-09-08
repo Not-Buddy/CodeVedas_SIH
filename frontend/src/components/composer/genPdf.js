@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from  'jspdf-autotable';
 
+// for the font
 const getFontAsBinaryString = async (url) => {
   const response = await fetch(url);
   if (!response.ok) {
@@ -14,10 +15,30 @@ const getFontAsBinaryString = async (url) => {
   return binaryString;
 };
 
+//  for the logo
+const getImageAsBase64 = async (url) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch image: ${response.statusText}`);
+  }
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
+
 export const genPdf = async (items, patientInfo) => {
   try {
-    const fontUrl = '/Poppins-Regular.ttf'; // Assumes the file is in the /public folder
-    const poppinsFont = await getFontAsBinaryString(fontUrl);
+    const fontUrl = '/Poppins-Regular.ttf'; 
+    const logoUrl = '/assets/mainlogo.png'; 
+
+    const [poppinsFont, logo] = await Promise.all([
+      getFontAsBinaryString(fontUrl),
+      getImageAsBase64(logoUrl)
+    ]);
 
     const doc = new jsPDF();
 
@@ -25,12 +46,18 @@ export const genPdf = async (items, patientInfo) => {
     doc.addFont('Poppins-Regular.ttf', 'Poppins', 'normal');
     doc.setFont('Poppins'); 
 
-    doc.setFontSize(20);
-    doc.text("Your Patient codes", 14, 22);
+    const logoWidth = 80;
+    const logoHeight = 15; 
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const logoX = pageWidth - logoWidth - 14; // Position on the top right
+    const logoY = 15;
+    doc.addImage(logo, 'PNG', logoX, logoY, logoWidth, logoHeight);
 
-    // 5. Add Patient Information (if available)
+    doc.setFontSize(20);
+    doc.text("Your Patient Codes", 14, 22);
+
     const hasPatientInfo = patientInfo.name || patientInfo.email || patientInfo.phone;
-    let startY = 30;
+    let startY = 40;
 
     if (hasPatientInfo) {
       doc.setFontSize(12);
@@ -53,15 +80,14 @@ export const genPdf = async (items, patientInfo) => {
       startY += 5;
     }
 
-    // 6. Prepare data for the table
-    const tableColumn = ["Title / Display", "ICD Code", "NAM Code"];
+    // Prepare data for the table
+    const tableColumn = ["Name: Diacritical / Devnagari", "NAMASTE Code", "ICD-11 Code"];
     const tableRows = items.map(item => [
       item.display || item.title || 'N/A',
-      item.icd_code || 'N/A',
-      item.nam_code || 'N/A',
+      item.nam_code || 'None',
+      item.icd_code || 'None',
     ]);
 
-    // 7. Add the table using jspdf-autotable
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
@@ -70,11 +96,11 @@ export const genPdf = async (items, patientInfo) => {
       headStyles: {
         fillColor: [41, 128, 185],
         textColor: 255,
-        font: 'Poppins', // Ensure table header uses Poppins
+        font: 'Poppins', 
         fontStyle: 'bold',
       },
       styles: {
-        font: 'Poppins', // IMPORTANT: Specify the font for the table content
+        font: 'Poppins', 
         fontStyle: 'normal',
       },
       alternateRowStyles: {
@@ -82,7 +108,7 @@ export const genPdf = async (items, patientInfo) => {
       }
     });
 
-    // 8. Add a footer with page numbers and generation date
+    // footer with page numbers and generation date
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
@@ -93,12 +119,10 @@ export const genPdf = async (items, patientInfo) => {
       doc.text(pageNumText, doc.internal.pageSize.width - 40, doc.internal.pageSize.height - 10);
     }
 
-    // 9. Save the PDF
     const fileName = `medical-codes-${new Date().toISOString().split('T')[0]}.pdf`;
     doc.save(fileName);
 
   } catch (error) {
-    // If the font fails to load, inform the user.
     console.error("Failed to generate PDF:", error);
     alert("Could not generate PDF. The required font file failed to load.");
   }
