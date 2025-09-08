@@ -171,8 +171,8 @@ const HomePage = () => {
                     left: 0,
                     right: 0,
                     zIndex: 1000,
-                    backgroundColor: "#38A169", // Green background
-                    borderTop: "1px solid #2F855A",
+                    backgroundColor: "#57D24B", // Green background
+                    borderTop: "1px solid #57D24B",
                     boxShadow: "0 -4px 6px -1px rgba(0, 0, 0, 0.1)",
                     transition: "all 0.3s ease",
                     height: isComposerExpanded ? "40vh" : "50px",
