@@ -1,7 +1,6 @@
 .composer-wrapper {
   width: 100%;
   max-width: 400px;
-  /* MODIFICATION: Make the wrapper a flex column that fills its container's height */
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -12,7 +11,6 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 10px;
-  /* MODIFICATION: Prevent this part from shrinking */
   flex-shrink: 0;
 }
 
@@ -38,9 +36,8 @@
   font-family: 'Arial', sans-serif;
   display: flex;
   flex-direction: column;
-  /* MODIFICATION: Remove fixed height and allow this section to grow and fill available space */
   flex-grow: 1;
-  overflow: hidden; /* This is crucial to contain the scrolling list */
+  overflow: hidden; 
 }
 
 .composer-content {
@@ -112,7 +109,6 @@
 .composer-footer {
   padding: 20px;
   position: relative;
-  /*Prevent this part from shrinking */
   flex-shrink: 0;
 }
 
@@ -214,16 +210,16 @@
 }
 
 .composer-item:hover {
-  background-color: #f3f4f6; /* A slightly darker grey on hover */
+  background-color: #f3f4f6; 
   border-color: #d1d5db;
 }
 
 .remove-btn {
-  color: #d1d5db; /* Make the 'x' lighter by default */
+  color: #d1d5db;
 }
 
 .composer-item:hover .remove-btn {
-  color: #ef4444; /* Make the 'x' red on hover */
+  color: #ef4444; 
 }
 
 .item-details {
@@ -449,11 +445,11 @@
 
 /* --- Dark Theme Styles --- */
 body.dark-theme .composer-title h2 {
-  color: #FFFFFF; /* Headings / Titles */
+  color: #FFFFFF;
 }
 body.dark-theme .composer-container {
-  background: #1A1A1A; /* Card Background */
-  border-color: #2F2F2F; /* Borders / Dividers */
+  background: #1A1A1A;
+  border-color: #2F2F2F;
 }
 body.dark-theme .patient-info-btn {
     background-color: #1A1A1A;
@@ -464,21 +460,53 @@ body.dark-theme .patient-info-display {
     border-color: #2F2F2F;
 }
 body.dark-theme .patient-info-display p {
-    color: #CCCCCC; /* Normal text */
+    color: #CCCCCC;
 }
 body.dark-theme .clear-patient-info {
     color: #CCCCCC;
 }
 body.dark-theme .empty-text {
-  color: #999999; /* Secondary text */
+  color: #999999;
 }
 body.dark-theme .composer-item {
-  background-color: #2F2F2F; /* A slightly lighter "card" for list items */
+  background-color: #2F2F2F;
   border-color: #444;
 }
 body.dark-theme .item-title {
-  color: #FFFFFF; /* Headings / Titles */
+  color: #FFFFFF;
 }
 body.dark-theme .item-code {
-  color: #CCCCCC; /* Normal text */
+  color: #CCCCCC;
+}
+
+/* MODIFICATION: Added dark theme styles for the Patient Information popup */
+body.dark-theme .patient-popup-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+body.dark-theme .patient-popup {
+  background-color: #1A1A1A;
+}
+body.dark-theme .popup-header {
+  background-color: #2F2F2F;
+}
+body.dark-theme .popup-header h3 {
+  color: #FFFFFF;
+}
+body.dark-theme .close-popup {
+  color: #CCCCCC;
+}
+body.dark-theme .input-group label {
+  color: #CCCCCC;
+}
+body.dark-theme .input-group input {
+  background-color: #2F2F2F;
+  color: #CCCCCC;
+  border-color: #444;
+}
+body.dark-theme .input-group input::placeholder {
+  color: #999999;
+}
+body.dark-theme .save-patient-btn {
+    background-color: #57D24B;
+    color: #ffffff;
 }
