@@ -210,22 +210,22 @@
     }
   }
 
-  /* --- Dark Theme Styles --- */
+/* --- Dark Theme Styles --- */
 body.dark-theme .search-title {
-  color: #cbd5e0;
+  color: #FFFFFF; /* Headings / Titles */
 }
 body.dark-theme .search-input {
-  background-color: #2d3748;
-  color: #e2e8f0;
-  border-color: #48bb78;
+  background-color: #1A1A1A; /* Card Background */
+  color: #CCCCCC; /* Normal text */
+  border-color: #2F2F2F; /* Borders / Dividers */
 }
 body.dark-theme .search-input::placeholder {
-  color: #718096;
+  color: #999999; /* Secondary text */
 }
 body.dark-theme .clear-all-btn {
-  color: #a0aec0;
+  color: #CCCCCC;
 }
 body.dark-theme .clear-all-btn:hover {
-  color: #e2e8f0;
-  background-color: #2d3748;
+  color: #FFFFFF;
+  background-color: #1A1A1A;
 }

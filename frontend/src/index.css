@@ -6,6 +6,6 @@ body {
 
 /* Dark theme */
 body.dark-theme {
-    background-color: #1a202c;
-    color: #e2e8f0;
+    background-color: #0D0D0D;
+    color: #CCCCCC; /* Normal text */
 }

@@ -250,36 +250,37 @@
 
 /* --- Dark Theme Styles --- */
 body.dark-theme .outer {
-  background-color: #2d3748;
-  border-color: #4a5568;
+  background-color: #1A1A1A; /* Card Background */
+  border-color: #2F2F2F; /* Borders / Dividers */
 }
 body.dark-theme .outer:hover {
-  background-color: #4a5568;
+  background-color: #2F2F2F;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 body.dark-theme .label,
 body.dark-theme .tags p {
-  background-color: #2d3748;
-  color: #a0aec0;
+  background-color: #1A1A1A;
+  color: #CCCCCC; /* Normal text */
 }
 body.dark-theme .text h2 {
-  color: #e2e8f0;
+  color: #FFFFFF; /* Headings / Titles */
 }
 body.dark-theme .text p {
-  color: #cbd5e0;
+  color: #999999; /* Secondary text */
 }
 body.dark-theme .buttons button {
-    background-color: #4a5568;
-    color: #e2e8f0;
-    border-color: #718096;
-}
-body.dark-theme .buttons button#add-button {
-    background: #48bb78;
-    border-color: #48bb78;
-    color: #1a202c;
+    background-color: #2F2F2F;
+    color: #CCCCCC;
+    border-color: #999999;
 }
 body.dark-theme .buttons button:disabled {
-    background: #4a5568;
-    color: #718096;
+    background: #2F2F2F;
+    color: #666;
     opacity: 0.5;
+}
+/* This keeps the green "Add to Composer" button, but makes the text dark for contrast */
+body.dark-theme .buttons button#add-button {
+    background: #57D24B;
+    border-color: #57D24B;
+    color: #0D0D0D; 
 }

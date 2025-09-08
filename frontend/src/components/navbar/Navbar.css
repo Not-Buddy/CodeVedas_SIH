@@ -49,12 +49,9 @@ nav p{
     margin-left: -1em;
 }
 
-/* --- MODIFICATION: Updated Styles for the Theme Toggle Switch --- */
-
 .theme-switch {
   position: relative;
   display: inline-block;
-  /* Made the switch smaller */
   width: 95px; 
   height: 30px;
   margin-right: 1em;
@@ -83,7 +80,6 @@ nav p{
 .slider:before {
   position: absolute;
   content: "";
-  /* Adjusted thumb size */
   height: 22px;
   width: 22px;
   left: 4px;
@@ -103,23 +99,33 @@ nav p{
   text-align: right; /* Text on the right for light mode */
 }
 
-/* --- Styles for when the switch is ON (Dark Mode) --- */
 
+/* --- MODIFICATION: Updated Dark Theme Styles --- */
+
+/* Styles for the switch when ON (Dark Mode) */
 input:checked + .slider {
-    background-color: #3e4551; /* Dark track for dark mode */
+    background-color: #2F2F2F; /* Card Background */
 }
 
 input:checked + .slider:before {
-  transform: translateX(65px); /* Adjusted travel distance for smaller size */
+  transform: translateX(65px);
 }
 
 input:checked + .slider .switch-text {
-    color: #a0aec0; /* Lighter text for dark mode */
-    text-align: left; /* Text on the left for dark mode */
+    color: #FFFFFF; /* Headings / Titles */
+    text-align: left;
 }
 
+/* General Navbar styles in dark mode */
+body.dark-theme nav {
+    background-color: #1A1A1A; /* Card Background */
+    border-color: #2F2F2F; /* Borders / Dividers */
+}
 
-/* --- Dark Theme Styles for Navbar --- */
+body.dark-theme nav h2 {
+    color: #FFFFFF; /* Headings / Titles */
+}
+
 body.dark-theme nav p {
-    color: #a0aec0;
+    color: #999999; /* Secondary text */
 }
