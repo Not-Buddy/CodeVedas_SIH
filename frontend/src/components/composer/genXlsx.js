@@ -11,13 +11,13 @@ export const genXlsx = (items, patientInfo) => {
       ['MEDICAL CODES'],
     ] : [['MEDICAL CODES']]),
     // Header row for the medical codes
-    ['Name: Diacritical / Devnagari', 'NAMASTE Code', 'ICD-11 Code', 'Combined Code'],
+    ['Name: Diacritical / Devnagari', 'NAMASTE Code', 'ICD-11 Code', 'Description'],
     // Map over the items to create a row for each
     ...items.map(item => [
       item.display || item.title || '',
       item.nam_code || '',
       item.icd_code || '',
-      [item.icd_code, item.nam_code].filter(Boolean).join(' / ') || 'N/A',
+      item.long_definition || item.definition || 'No Description Available'
     ])
   ];
 

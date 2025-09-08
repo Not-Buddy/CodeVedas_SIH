@@ -81,11 +81,12 @@ export const genPdf = async (items, patientInfo) => {
     }
 
     // Prepare data for the table
-    const tableColumn = ["Name: Diacritical / Devnagari", "NAMASTE Code", "ICD-11 Code"];
+    const tableColumn = ["Name: Diacritical / Devnagari", "NAMASTE Code", "ICD-11 Code", "Description"];
     const tableRows = items.map(item => [
       item.display || item.title || 'N/A',
       item.nam_code || 'None',
       item.icd_code || 'None',
+      item.long_definition || item.definition || 'No Description Available'
     ]);
 
     autoTable(doc, {
