@@ -129,3 +129,53 @@ body.dark-theme nav h2 {
 body.dark-theme nav p {
     color: #999999; /* Secondary text */
 }
+
+/* Fixing the navbar responsiveness */
+
+@keyframes scaleDown {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(0.8);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    nav h2,
+    nav p,
+    .right img,
+    .theme-switch {
+      animation: scaleDown 0.3s ease forwards;
+    }
+  
+    /* reduce spacing after scale down */
+    nav {
+      gap: 0.3rem;
+      padding: 0.4rem 0.8rem;
+    }
+  
+    .left,
+    .right {
+      gap: 0.3rem;
+    }
+  
+    /* fix toggle size in small screens */
+    .theme-switch {
+      width: 70px;
+      height: 24px;
+      margin-right: 0.5em;
+    }
+  
+    .slider:before {
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+    }
+  
+    input:checked + .slider:before {
+      transform: translateX(45px); /* adjusted for smaller switch */
+    }
+  }
+  

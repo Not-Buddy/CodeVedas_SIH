@@ -7,243 +7,301 @@ import Composer from "../components/composer/Composer.jsx";
 import { fallback } from "./fallback.js";
 
 const EmptyState = () => (
-    <div style={{ marginTop: "1rem", textAlign: "center", color: "#666" }}>
-        <h2 style={{ fontSize: "clamp(1.2rem, 4vw, 1.5rem)" }}>No Results Found</h2>
-        <p style={{ fontSize: "clamp(0.8rem, 2.5vw, 1rem)" }}>
-            We couldn't find any matches for your search. Please try a different term.
-        </p>
-    </div>
+  <div style={{ 
+    marginTop: "1rem", 
+    textAlign: "center", 
+    color: "#666",
+    animation: "fadeIn 0.5s ease-in"
+  }}>
+    <h2 style={{ fontSize: "clamp(1.2rem, 4vw, 1.5rem)" }}>No Results Found</h2>
+    <p style={{ fontSize: "clamp(0.8rem, 2.5vw, 1rem)" }}>
+      We couldn't find any matches for your search. Please try a different term.
+    </p>
+  </div>
 );
 
 const HomePage = () => {
-    const [searchResults, setSearchResults] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [composerItems, setComposerItems] = useState([]);
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const [isMobileView, setIsMobileView] = useState(false);
-    const [isComposerExpanded, setIsComposerExpanded] = useState(false);
+  const [searchResults, setSearchResults] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [composerItems, setComposerItems] = useState([]);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [isComposerExpanded, setIsComposerExpanded] = useState(false);
 
-    useEffect(() => {
-        if (isDarkMode) {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
+  // Check if mobile view
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobileView(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+
+  // Toggle dark theme
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  };
+
+  // Search
+  const handleSearchSubmit = async (searchData) => {
+    const { query, filters } = searchData;
+    
+    const params = new URLSearchParams();
+    params.append('search', query);
+
+    if (filters.discipline.length > 0) {
+      params.append('discipline', filters.discipline[0].toLowerCase());
+    }
+    params.append('limit', '7');
+
+    const apiUrl = `http://127.0.0.1:8080/terminology/search?${params.toString()}`;
+    
+    console.log('Constructed API URL:', apiUrl); 
+    
+    setLoading(true);
+    try {
+      const response = await axios.get(apiUrl);
+      console.log(response.data.results);
+      setSearchResults(response.data.results);
+    } catch (err) {
+      console.log("API call failed. Using fallback data.", err);
+      setSearchResults(fallback); 
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClear = () => setSearchResults(null);
+
+  // Composer actions
+  const handleAddToComposer = (item) => {
+    console.log("Adding to composer:", item);
+    if (
+      !composerItems.some(
+        (i) => i.nam_code === item.nam_code && i.icd_code === item.icd_code
+      )
+    ) {
+      setComposerItems((prev) => [...prev, item]);
+    }
+  };
+
+  const handleRemoveFromComposer = (itemToRemove) => {
+    const key = itemToRemove.nam_code ? "nam_code" : "icd_code";
+    setComposerItems((prev) =>
+      prev.filter((item) => item[key] !== itemToRemove[key])
+    );
+  };
+
+  const clearComposer = () => {
+    setComposerItems([]);
+    setIsComposerExpanded(false);
+  };
+
+  const toggleComposer = () => setIsComposerExpanded((prev) => !prev);
+
+  return (
+    <>
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-    }, [isDarkMode]);
-
-    // Check if mobile view
-    useEffect(() => {
-        const checkMobile = () => {
-            setIsMobileView(window.innerWidth <= 768);
-        };
         
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        
-        return () => {
-            window.removeEventListener('resize', checkMobile);
-        };
-    }, []);
-
-    const toggleTheme = () => {
-        setIsDarkMode(prevMode => !prevMode);
-    };
-
-    const handleSearchSubmit = async (searchData) => {
-        const { query, filters } = searchData;
-        
-        const params = new URLSearchParams();
-        params.append('search', query);
-
-        if (filters.discipline.length > 0) {
-            params.append('discipline', filters.discipline[0].toLowerCase());
+        @keyframes slideInLeft {
+          from { opacity: 0; transform: translateX(-20px); }
+          to { opacity: 1; transform: translateX(0); }
         }
-        params.append('limit', '7');
-
-        const apiUrl = `http://127.0.0.1:8080/terminology/search?${params.toString()}`;
         
-        console.log('Constructed API URL:', apiUrl); 
+        .result-item {
+          animation: slideInLeft 0.3s ease-out;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+          .composer-desktop {
+            display: none !important;
+          }
+        }
         
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await axios.get(apiUrl);
-            console.log(response.data.results);
-            setSearchResults(response.data.results);
-        } catch (err) {
-            console.log("API call failed. Using fallback data.", err);
-            setSearchResults(fallback); 
-        } finally {
-            setLoading(false);
+        @media (min-width: 769px) {
+          .composer-mobile {
+            display: none !important;
+          }
         }
-    };  
+      `}</style>
 
-    const handleClear = () => {
-        setSearchResults(null);
-    };
+      <div style={{
+        margin: "0 clamp(1rem, 5vw, 7em)",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        paddingBottom: isMobileView ? (isComposerExpanded ? "60vh" : "50px") : "0"
+      }}>
+        <Navbar isDarkMode={isDarkMode} onToggleTheme={toggleTheme} />
 
-    const handleAddToComposer = (itemToAdd) => {
-        console.log(itemToAdd);
-        if (!composerItems.some(item => (item.nam_code === itemToAdd.nam_code && item.icd_code === itemToAdd.icd_code))) {
-            setComposerItems(prevItems => [...prevItems, itemToAdd]);
-        }
-    };
-
-    const handleRemoveFromComposer = (itemToRemove) => {
-        const keyToRemove = itemToRemove.nam_code != null ? 'nam_code' : 'icd_code';
-        const valueToRemove = itemToRemove.nam_code != null ? itemToRemove.nam_code : itemToRemove.icd_code;
-
-        setComposerItems(prevItems => prevItems.filter(item => item[keyToRemove] !== valueToRemove));
-    };
-
-    const toggleComposer = () => {
-        setIsComposerExpanded(!isComposerExpanded);
-    };
-
-    const clearComposer = () => {
-        setComposerItems([]);
-    };
-
-    return (
         <div style={{
-            margin: "0 clamp(1rem, 5vw, 2rem)",
-            minHeight: "100vh",
+          display: "flex",
+          flexDirection: "row",
+          flexGrow: 1,
+          gap: "2rem",
+          overflow: "hidden"
+        }}>
+          <div className="left" style={{
             display: "flex",
             flexDirection: "column",
-            gap: "1rem",
-            paddingBottom: isMobileView && composerItems.length > 0 ? (isComposerExpanded ? "40vh" : "50px") : "0"
-        }}>
-            <Navbar isDarkMode={isDarkMode} onToggleTheme={toggleTheme} />
+            width: isMobileView ? "100%" : "70%",
+            flex: isMobileView ? "1" : "2 1 70%"
+          }}>
+            <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
+            <div className="results-container" style={{
+              flexGrow: 1,
+              overflowY: "auto",
+              padding: "0.5rem",
+              maxHeight: isMobileView ? "calc(100vh - 200px)" : "calc(100vh - 150px)"
+            }}>
+              {!loading && searchResults && searchResults.length === 0 && (
+                <EmptyState />
+              )}
+              {!loading && searchResults && searchResults.length > 0 && (
+                searchResults.map((result, index) => (
+                  <div 
+                    key={result.id} 
+                    className="result-item"
+                    style={{
+                      animationDelay: `${index * 0.1}s`,
+                      animationFillMode: "both"
+                    }}
+                  >
+                    <Results item={result} handleAddToComposer={handleAddToComposer}/>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
 
-            <div style={{
+          {/* Desktop Composer - hidden on mobile */}
+          {!isMobileView && (
+            <div className="composer-desktop" style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "30%",
+              minWidth: "300px",
+              flex: "1 1 30%"
+            }}>
+              <Composer
+                items={composerItems}
+                onRemove={handleRemoveFromComposer}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Mobile Composer - hidden on desktop */}
+        {isMobileView && (
+          <div
+            className="composer-mobile"
+            style={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1000,
+              backgroundColor: "#57D24B",
+              borderTop: "1px solid #57D24B",
+              boxShadow: "0 -4px 6px -1px rgba(0,0,0,0.1)",
+              transition: "height 0.3s ease",
+              height: isComposerExpanded ? "60vh" : "50px",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
                 display: "flex",
-                flexDirection: isMobileView ? "column" : "row",
-                flexGrow: 1,
-                gap: "1rem",
-                flexWrap: "wrap"
-            }}> 
-                <div className="left" style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "100%",
-                    minWidth: "200px",
-                    flex: isMobileView ? "none" : "2 1 60%"
-                }}>
-                    <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
-                    <div className="results-container" style={{
-                        flexGrow: 1,
-                        overflowY: "auto",
-                        padding: "0.5rem",
-                        maxHeight: isMobileView ? "calc(100vh - 250px)" : "calc(100vh - 200px)"
-                    }}>
-                        {!loading && searchResults && searchResults.length === 0 && (
-                            <EmptyState />
-                        )}
-                        {!loading && searchResults && searchResults.length > 0 && (
-                            searchResults.map((result) => (
-                                <Results key={result.id} item={result} handleAddToComposer={handleAddToComposer}/>
-                            ))
-                        )}
-                    </div>
-                </div>
-                
-                {/* Desktop Composer - unchanged */}
-                {!isMobileView && (
-                    <div className="right" style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "100%",
-                        minWidth: "200px",
-                        flex: "1 1 30%",
-                        justifyContent: "flex-start"
-                    }}>
-                        <Composer items={composerItems} onRemove={handleRemoveFromComposer}/>
-                    </div>
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "0.75rem 1rem",
+                height: "50px",
+                cursor: composerItems.length > 0 ? "pointer" : "default",
+              }}
+              onClick={composerItems.length > 0 ? toggleComposer : undefined}
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                {composerItems.length > 0 && (
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "white",
+                      marginRight: "0.5rem",
+                      fontSize: "1rem",
+                      transition: "transform 0.3s ease",
+                      transform: isComposerExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                    }}
+                  >
+                    ▼
+                  </span>
                 )}
+                <span style={{ fontWeight: "bold", color: "white" }}>
+                  {composerItems.length === 0
+                    ? "Composer (Empty)"
+                    : `Composer (${composerItems.length} ${
+                        composerItems.length === 1 ? "item" : "items"
+                      })`}
+                </span>
+              </div>
+              {composerItems.length > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    clearComposer();
+                  }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "white",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  Clear
+                </button>
+              )}
             </div>
 
-            {/* Mobile Composer Bar - only shown on mobile */}
-            {isMobileView && composerItems.length > 0 && (
-                <div style={{
-                    position: "fixed",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    zIndex: 1000,
-                    backgroundColor: "#57D24B", // Green background
-                    borderTop: "1px solid #57D24B",
-                    boxShadow: "0 -4px 6px -1px rgba(0, 0, 0, 0.1)",
-                    transition: "all 0.3s ease",
-                    height: isComposerExpanded ? "40vh" : "50px",
-                    overflow: "hidden"
-                }}>
-                    {/* Composer Toggle Button */}
-                    <div style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        padding: "0.75rem 1rem",
-                        cursor: "pointer",
-                        height: "50px",
-                        boxSizing: "border-box"
-                    }} onClick={toggleComposer}>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{
-                                fontWeight: "bold",
-                                color: "white",
-                                marginRight: "0.5rem",
-                                fontSize: "1rem",
-                                transition: "transform 0.3s ease",
-                                transform: isComposerExpanded ? "rotate(180deg)" : "rotate(0deg)"
-                            }}>
-                                ▼
-                            </span>
-                            <span style={{
-                                fontWeight: "bold",
-                                color: "white",
-                                fontSize: "1rem"
-                            }}>
-                                Composer ({composerItems.length} {composerItems.length === 1 ? 'item' : 'items'})
-                            </span>
-                        </div>
-                        <button 
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                clearComposer();
-                            }}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                color: "white",
-                                cursor: "pointer",
-                                fontWeight: "bold",
-                                padding: "0.3rem 0.6rem",
-                                borderRadius: "4px",
-                                fontSize: "0.8rem"
-                            }}
-                            onMouseOver={(e) => e.target.style.backgroundColor = "rgba(255,255,255,0.2)"}
-                            onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
-                        >
-                            Clear
-                        </button>
-                    </div>
-
-                    {/* Composer Content */}
-                    {isComposerExpanded && (
-                        <div style={{
-                            height: "calc(100% - 50px)",
-                            overflowY: "auto",
-                            padding: "1rem",
-                            backgroundColor: isDarkMode ? "#2D3748" : "white"
-                        }}>
-                            <Composer items={composerItems} onRemove={handleRemoveFromComposer}/>
-                        </div>
-                    )}
-                </div>
+            {isComposerExpanded && composerItems.length > 0 && (
+              <div
+                style={{
+                  height: "calc(100% - 50px)",
+                  overflowY: "auto",
+                  padding: "1rem",
+                  backgroundColor: isDarkMode ? "#2D3748" : "white",
+                }}
+              >
+                <Composer
+                  items={composerItems}
+                  onRemove={handleRemoveFromComposer}
+                />
+              </div>
             )}
-        </div>
-    );
+          </div>
+        )}
+      </div>
+    </>
+  );
 };
 
 export default HomePage;
