@@ -288,7 +288,7 @@ const HomePage = () => {
                   height: "calc(100% - 50px)",
                   overflowY: "auto",
                   padding: "1rem",
-                  backgroundColor: isDarkMode ? "#2D3748" : "white",
+                  backgroundColor: isDarkMode ? "#0D0D0D" : "white",
                 }}
               >
                 <Composer
