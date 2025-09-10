@@ -77,3 +77,22 @@
     opacity: 0;
     transition: opacity 1s ease-in-out;
   }
+
+  /* Responsive logo sizing */
+  @media (max-width: 760px) {
+    .logo-space img {
+      width: 250px;
+      height: auto;
+    }
+  }
+
+/* reducing the border from 1px solid to to 0.5px */
+
+/* @media  (max-width: 600){
+  .rectangle{
+    height: 100vh;
+    background: linear-gradient(to bottom, #D9D9D9 20%, #57D24B 100%);
+    transform: translateY(0);
+    border-left: 0.5px solid rgba(255, 255, 255, 0.3);
+  }
+} */
