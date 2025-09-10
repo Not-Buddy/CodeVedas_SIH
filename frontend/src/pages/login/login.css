@@ -47,8 +47,7 @@ body {
   max-width: 380px;
   margin: 0 auto;
   width: 100%;
-  /* To adjust vertical position, change this margin-top value */
-  margin-top: 3rem; /* Default position - increase to move content down further */
+  margin-top: 4rem;
 }
 
 .logo-section {
