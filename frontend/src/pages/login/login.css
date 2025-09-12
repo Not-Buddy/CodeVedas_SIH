@@ -14,7 +14,7 @@ body {
 }
 
 .login-container {
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -26,7 +26,7 @@ body {
 .login-content {
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: white;
   overflow: hidden;
 }
@@ -38,7 +38,7 @@ body {
   flex-direction: column;
   padding: 2rem;
   justify-content: center;
-  overflow-y: hidden; /* Was 'auto' before */
+  overflow-y: auto;
   position: relative;
   scale: 0.9;
 }
@@ -251,7 +251,7 @@ body {
 
 /* Hero Section - 50% width on desktop */
 .hero-section {
-  flex: 0 0 50%; /* Exactly 50% width */
+  flex: 0 0 50%;
   background: linear-gradient(135deg, #a8e6a3 0%, #88c999 50%, #7bb88f 100%);
   overflow: hidden;
 }
@@ -273,16 +273,65 @@ body {
   display: none;
 }
 
-/* Tablet Responsiveness (900px to 1024px) */
-@media (max-width: 1024px) {
+/* Large Desktop */
+@media (min-width: 1200px) {
   .login-form-section {
-    flex: 0 0 50%;
-    padding: 1.5rem;
+    padding: 3rem;
   }
   
   .form-container {
-    max-width: 350px;
+    max-width: 420px;
+  }
+}
+
+/* Tablet Landscape (1024px - 1199px) */
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .login-form-section {
+    flex: 0 0 50%;
+    padding: 2rem;
+  }
+  
+  .form-container {
+    max-width: 360px;
+    margin-top: 3rem;
+  }
+  
+  .hero-section {
+    padding: 18px;
+  }
+}
+
+/* Tablet Portrait (768px - 1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .login-content {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .hero-section {
+    flex: 0 0 280px;
+    order: 1;
+  }
+  
+  .login-form-section {
+    flex: 1;
+    padding: 2rem 3rem;
+    order: 2;
+    justify-content: flex-start;
+    scale: 1;
+    overflow-y: visible;
+  }
+  
+  .form-container {
+    max-width: 400px;
     margin-top: 2rem;
+  }
+  
+  .logo-image {
+    width: 150px;
+    height: 48px;
+    scale: 1.5;
   }
   
   .welcome-title {
@@ -292,34 +341,47 @@ body {
   .welcome-subtitle {
     font-size: 0.9rem;
   }
+  
+  .hero-image-desktop {
+    display: none;
+  }
+  
+  .hero-image-mobile {
+    display: block;
+  }
 }
 
-/* Mobile and Tablet Responsiveness (below 900px) */
-@media (max-width: 900px) {
+/* Mobile Landscape (568px - 767px) */
+@media (max-width: 767px) and (min-width: 568px) {
   .login-content {
     flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .hero-section {
+    flex: 0 0 240px;
+    order: 1;
   }
   
   .login-form-section {
     flex: 1;
-    padding: 1.5rem;
+    padding: 1.5rem 2rem;
     order: 2;
     justify-content: flex-start;
+    scale: 1;
+    overflow-y: visible;
   }
   
   .form-container {
     max-width: 100%;
-    margin-top: 1rem; /* Less top margin on mobile */
-  }
-  
-  .hero-section {
-    flex: 0 0 250px;
-    order: 1;
+    margin-top: 1.5rem;
   }
   
   .logo-image {
     width: 140px;
     height: 45px;
+    scale: 1.3;
   }
   
   .welcome-title {
@@ -339,33 +401,118 @@ body {
   }
 }
 
-/* Small Mobile Responsiveness */
-@media (max-width: 480px) {
+/* Mobile Portrait (below 568px) */
+@media (max-width: 567px) {
+  .login-container {
+    min-height: 100vh;
+    height: auto;
+  }
+  
+  .login-content {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .hero-section {
+    flex: 0 0 200px;
+    order: 1;
+  }
+  
   .login-form-section {
-    padding: 1.2rem;
+    flex: 1;
+    padding: 1.5rem;
+    order: 2;
+    justify-content: flex-start;
+    scale: 1;
+    overflow-y: visible;
+  }
+  
+  .form-container {
+    max-width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .logo-section {
+    margin-bottom: 1.5rem;
   }
   
   .logo-image {
     width: 130px;
     height: 40px;
+    scale: 1.2;
+  }
+  
+  .welcome-section {
+    margin-bottom: 1.5rem;
   }
   
   .welcome-title {
     font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .login-form {
+    gap: 1rem;
   }
   
   .form-input,
   .login-button,
   .otp-button {
-    padding: 0.8rem;
+    padding: 0.75rem;
+    font-size: 0.9rem;
   }
   
-  .hero-section {
-    flex: 0 0 200px;
+  .signup-section {
+    margin-top: 1rem;
   }
   
   .footer {
     padding-top: 1rem;
     padding-bottom: 0.5rem;
+  }
+  
+  .footer p {
+    font-size: 0.75rem;
+  }
+  
+  .hero-image-desktop {
+    display: none;
+  }
+  
+  .hero-image-mobile {
+    display: block;
+  }
+}
+
+/* Extra Small Mobile (below 400px) */
+@media (max-width: 399px) {
+  .login-form-section {
+    padding: 1.2rem;
+  }
+  
+  .hero-section {
+    flex: 0 0 180px;
+  }
+  
+  .logo-image {
+    width: 120px;
+    height: 38px;
+    scale: 1.1;
+  }
+  
+  .welcome-title {
+    font-size: 1.3rem;
+  }
+  
+  .form-input,
+  .login-button,
+  .otp-button {
+    padding: 0.7rem;
+    font-size: 0.85rem;
   }
 }
