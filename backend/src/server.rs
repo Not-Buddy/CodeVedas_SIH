@@ -2,6 +2,8 @@ use actix_web::{web, App, HttpServer, middleware::Logger, http};
 use crate::dbcodes::{mongo, redis};
 use crate::api;  // Import the api module
 use actix_cors::Cors;
+use crate::gemini::embedding::generate_embeddings_handler;
+
 
 // Configure all routes
 fn configure_routes(cfg: &mut web::ServiceConfig) {
@@ -13,6 +15,7 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
         // Main API
         .route("/api", web::get().to(api::rest_api))
         
+
         // Backend Services
         .service(
             web::scope("/services")
@@ -20,6 +23,8 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
                 .route("/mapping", web::get().to(api::mapping_service))
                 .route("/sync", web::get().to(api::sync_service))
                 .route("/audit", web::get().to(api::audit_service))
+                .route("/generate-embeddings", web::get().to(generate_embeddings_handler)) // <-- new route added here
+
         )
 
         // Core Components

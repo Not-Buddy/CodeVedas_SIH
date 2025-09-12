@@ -19,3 +19,4 @@ mongodb = "2.7"
 dotenv = "0.15"
 redis = { version = "0.21", features = ["tokio-comp", "connection-manager"] } 
 web = "0.2.12"
+anyhow = "1.0"

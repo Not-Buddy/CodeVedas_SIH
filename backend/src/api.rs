@@ -77,7 +77,6 @@ pub async fn terminology_search(
         Err(e) => eprintln!("NAMASTE search failed: {}", e),
     }
 
-    // ✅ FIXED: Complete ICD search section
     let icd_codec = IcdCodec::new();
     let icd_filter = IcdFilter {
         discipline: None,
