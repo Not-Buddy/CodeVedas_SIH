@@ -12,6 +12,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
     discipline: [],
     language: []
   });
+  const [searchType, setSearchType] = useState('Auto'); 
 
   const recognitionRef = useRef(null);
 
@@ -53,6 +54,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
 
   const handleClearAll = () => {
     setSearchQuery('');
+    setSearchType('Auto'); 
     setActiveFilters({
       systems: [],
       organSystem: 'All',
@@ -99,7 +101,8 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
     
     const searchData = {
       query: searchQuery,
-      filters: activeFilters 
+      filters: activeFilters,
+      type: searchType  
     };
     
     if (onSubmit) {
@@ -138,6 +141,19 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
       </div>
 
       <form className="search-input-container" onSubmit={handleSubmit}>
+        <div className="search-type-selector">
+          <select 
+            className="search-type-dropdown"
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value)}
+            aria-label="Select search type"
+          >
+            <option value="auto">Auto</option>
+            <option value="regex">Direct</option>
+            <option value="semantic">Semantic</option>
+          </select>
+        </div>
+
         <input
           type="text"
           className="search-input"

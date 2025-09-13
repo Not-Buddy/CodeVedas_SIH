@@ -30,6 +30,7 @@ const HomePage = () => {
   const [isMobileView, setIsMobileView] = useState(false);
   const [isComposerExpanded, setIsComposerExpanded] = useState(false);
 
+
   // Check if mobile view
   useEffect(() => {
     const checkMobile = () => {
@@ -59,15 +60,18 @@ const HomePage = () => {
 
   // Search
   const handleSearchSubmit = async (searchData) => {
-    const { query, filters } = searchData;
-    
+    const { query, filters, type } = searchData;
     const params = new URLSearchParams();
     params.append('search', query);
 
     if (filters.discipline.length > 0) {
       params.append('discipline', filters.discipline[0].toLowerCase());
     }
+    params.append('method', type);
     params.append('limit', '7');
+    if(type === "semantic"){
+      params.append('threshold', '0.6');  
+    }
 
     const apiUrl = `http://127.0.0.1:8080/terminology/search?${params.toString()}`;
     
