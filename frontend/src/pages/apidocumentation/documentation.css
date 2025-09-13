@@ -1,0 +1,232 @@
+/* documentation.css */
+:root {
+    --primary-color: #57D24B;
+    --primary-dark: #3cb130;
+    --primary-light: #80dd77;
+    --text-color: #333;
+    --bg-light: #f9f9f9;
+    --border-color: #ddd;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* Header Styles */
+  .header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  .header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+  
+  /* Navigation */
+  .navbar {
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .navbar ul {
+    display: flex;
+    list-style: none;
+    overflow-x: auto;
+    padding: 1rem 0;
+  }
+  
+  .navbar li {
+    margin-right: 1.5rem;
+    white-space: nowrap;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color 0.3s;
+    position: relative;
+  }
+  
+  .navbar a:hover,
+  .navbar a.active {
+    color: var(--primary-color);
+  }
+  
+  .navbar a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+  }
+  
+  /* Main Content */
+  .main {
+    padding: 2rem 0;
+  }
+  
+  .section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 80px;
+  }
+  
+  .section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-light);
+  }
+  
+  .section h3 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+    color: var(--primary-dark);
+  }
+  
+  /* Features */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  
+  .feature-card {
+    background-color: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 5px;
+    border-left: 4px solid var(--primary-color);
+  }
+  
+  .feature-card h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+  }
+  
+  /* Endpoints */
+  .endpoint {
+    background-color: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .method-get, .method-post {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+  
+  .method-get {
+    background-color: #61affe;
+    color: white;
+  }
+  
+  .method-post {
+    background-color: #49cc90;
+    color: white;
+  }
+  
+  .endpoint-url {
+    font-family: monospace;
+    background-color: #f6f6f6;
+    padding: 0.5rem;
+    border-radius: 3px;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  
+  /* Code Blocks */
+  .code-block {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 5px;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  
+  .code-block pre {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #333;
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  .footer a {
+    color: var(--primary-light);
+    text-decoration: none;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .navbar ul {
+      flex-direction: column;
+    }
+    
+    .navbar li {
+      margin: 0.5rem 0;
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+    }
+    
+    .features {
+      grid-template-columns: 1fr;
+    }
+    
+    .method-get, .method-post {
+      position: static;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+  }

@@ -4,16 +4,19 @@ import Starter from './components/loader/Starter';
 import HomePage from './pages/Home';
 import Login from './pages/login/login';
 import RegistrationPage from './pages/registration/registration';
+import Documentation from 'frontend/src/pages/apidocumentation/documentation.jsx';
 
 const Router = () => {
   return (
     <BrowserRouter>
     <Starter/>
       {/* <Navbar />  <-- Navbar here would keep it static for all pages.*/}
-      <Routes>
+      <Routes> 
         <Route index element={<Login />} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/docs" element={<Documentation />} />
+        
         {/* Add your pages in a Route component like these: */}
         {/* 
         <Route index element={<HomePage />} />
