@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Starter from './components/loader/Starter';
 import HomePage from './pages/Home';
 import Login from './pages/login/login';
+import RegistrationPage from './pages/registration/registration';
 
 const Router = () => {
   return (
@@ -11,6 +12,7 @@ const Router = () => {
       {/* <Navbar />  <-- Navbar here would keep it static for all pages.*/}
       <Routes>
         <Route index element={<Login />} />
+        <Route path="/register" element={<RegistrationPage />} />
         <Route path="/home" element={<HomePage />} />
         {/* Add your pages in a Route component like these: */}
         {/* 

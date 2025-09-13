@@ -44,6 +44,9 @@ print('Indexes created successfully');
 "
 ```
 
+Command to start mongodb if its stopped in linux
+```bash
 sudo systemctl start mongod
+```
 
 hello madhav
