@@ -91,13 +91,6 @@ const RegistrationPage = () => {
         return;
       }
 
-      // Simulate OTP entry
-      const otp = prompt('Enter OTP sent to your email (use 123456):');
-      if (otp !== '123456') {
-        alert('Invalid OTP!');
-        setIsSubmitting(false);
-        return;
-      }
 
       // Create new user object
       const newUser = {
