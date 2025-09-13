@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Phone, User, Mail, MessageSquare, CheckCircle, Loader } from 'lucide-react';
+
 
 const RegistrationPage = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ const RegistrationPage = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,32 +60,76 @@ const RegistrationPage = () => {
     } else if (formData.nickname.trim().length < 4) {
       newErrors.nickname = 'Nickname must be at least 4 characters';
     }
+
+
+    if (!formData.password.trim()) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.trim().length < 8) {
+      newErrors.password = 'password must be at least 8 characters';
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (validateForm()) {
-      setIsSubmitting(true);
-      
-      try {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log('Registration completed:', formData);
-        
+  if (validateForm()) {
+    setIsSubmitting(true);
+
+    try {
+      // Simulate waiting for submission, e.g., API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Retrieve existing users from localStorage
+      const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+      // Check if email already registered
+      const emailExists = existingUsers.some(user => user.email === formData.email);
+      if (emailExists) {
+        alert('Email already registered!');
         setIsSubmitting(false);
-        setShowSuccess(true);
-        
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 3000);
-        
-      } catch (error) {
-        setIsSubmitting(false);
-        console.error('Registration failed:', error);
+        return;
       }
+
+      // Simulate OTP entry
+      const otp = prompt('Enter OTP sent to your email (use 123456):');
+      if (otp !== '123456') {
+        alert('Invalid OTP!');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Create new user object
+      const newUser = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        nickname: formData.nickname,
+        password: formData.password // For simplicity, set OTP as password
+      };
+
+      // Save new user to localStorage
+      existingUsers.push(newUser);
+      localStorage.setItem('users', JSON.stringify(existingUsers));
+
+      console.log('Registration completed:', newUser);
+
+      setIsSubmitting(false);
+      setShowSuccess(true);
+
+      // Redirect after 3 seconds
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+
+    } catch (error) {
+      setIsSubmitting(false);
+      console.error('Registration failed:', error);
     }
-  };
+  }
+};
+
 
   if (showSuccess) {
     return (
@@ -232,10 +279,34 @@ const RegistrationPage = () => {
               </div>
               {errors.nickname && <span style={styles.errorText}>{errors.nickname}</span>}
             </div>
+              
+                          <div style={styles.inputGroup}>
+              <label style={styles.label}>
+                password <span style={styles.required}>*</span>
+              </label>
+              <p style={styles.labelSubtext}>Display name (min 8 characters)</p>
+              <div style={styles.inputWrapper}>
+                <MessageSquare size={20} style={styles.inputIcon} />
+                <input
+                  type="text"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  style={{
+                    ...styles.input,
+                    ...(errors.password ? styles.inputError : {}),
+                    ...(formData.password && !errors.password ? styles.inputFilled : {})
+                  }}
+                  placeholder="Set your password"
+                />
+              </div>
+              {errors.password && <span style={styles.errorText}>{errors.password}</span>}
+            </div>
           </div>
         </div>
       </div>
-
+      
+      
       {/* Footer */}
       <div style={styles.footer}>
         <button style={styles.helpButton}>
@@ -308,7 +379,7 @@ const styles = {
   formContainer: {
     background: '#ffffff',
     borderRadius: '0',
-    padding: '200px',
+    padding: '40px',
     width: '100%',
     height: '100%',
     display: 'flex',
