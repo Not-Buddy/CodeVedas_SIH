@@ -161,10 +161,15 @@ pub async fn start_server() -> std::io::Result<()> {
     println!("      GET  /external/who-icd11         - WHO ICD-11 API status");
     println!("      GET  /external/namaste-csv       - NAMASTE CSV files status");
     
-    // Terminology Services
-    println!("   📚 TERMINOLOGY:");
-    println!("      GET  /terminology/ayurveda       - Ayurveda terminology database");
-    println!("      GET  /terminology/search          - Combined NAMASTE + ICD search");
+    // TERMINOLOGY documentations
+    println!(" 📚 TERMINOLOGY:");
+    println!(" GET /terminology/search - Combined NAMASTE + ICD search");
+    println!("     ?search=term           - Search term (required)");
+    println!("     &method=auto|semantic|regex - Search method (default: auto)");
+    println!("     &limit=N               - Limit results"); 
+    println!("     &threshold=0.7         - Similarity threshold for semantic search");
+    println!("     &language=both|english|hindi - Language filter for NAMASTE");
+
 
     // NAMASTE Ayurveda Codes
     println!("   🏥 NAMASTE (Ayurveda):");

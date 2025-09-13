@@ -13,7 +13,7 @@ use crate::codecs::icd::{IcdCodec, IcdCode};
 use crate::codecs::namaste::{NamasteCodec, NamasteCode};
 
 /// Call Gemini embedding API with the given api_key and input text, return embedding vector
-async fn call_gemini_embedding_api(api_key: &str, input_text: &str) -> anyhow::Result<Vec<f32>> {
+pub async fn call_gemini_embedding_api(api_key: &str, input_text: &str) -> anyhow::Result<Vec<f32>> {
     let client = reqwest::Client::new();
     let url = "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent";
     
