@@ -38,7 +38,8 @@ body {
   flex-direction: column;
   padding: 2rem;
   justify-content: center;
-  overflow-y: auto;
+  /* MODIFICATION: Changed 'auto' to 'hidden' to remove the scrollbar on desktop */
+  overflow-y: hidden;
   position: relative;
   scale: 0.9;
 }

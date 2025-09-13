@@ -503,7 +503,7 @@ const styles = {
     left: '0',
     width: '100%',
     height: '100%',
-    background: 'rgba(0, 0, 0, 0.8)',
+    background: 'rgb(255, 255, 255)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -516,7 +516,7 @@ const styles = {
     textAlign: 'center',
     maxWidth: '400px',
     width: '90%',
-    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
+    boxShadow: '0 20px 40px rgba(255, 255, 255, 0.3)'
   },
   successIcon: {
     marginBottom: '24px'

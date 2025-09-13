@@ -22,6 +22,7 @@ const EmptyState = () => (
 
 const HomePage = () => {
   const [searchResults, setSearchResults] = useState(null);
+  const [searchDisplay, setSearchDisplay] = useState(null);
   const [loading, setLoading] = useState(false);
   const [composerItems, setComposerItems] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -75,34 +76,57 @@ const HomePage = () => {
     try {
       const response = await axios.get(apiUrl);
       console.log(response.data.results);
-      setSearchResults(response.data.results);
+      const newResults = response.data.results; 
+      setSearchResults(newResults);
+      const filteredDisplay = newResults.filter(
+        (result) => !composerItems.some(
+          (composerItem) => composerItem.nam_code === result.nam_code
+        )
+      ); 
+      setSearchDisplay(filteredDisplay);
     } catch (err) {
       console.log("API call failed. Using fallback data.", err);
-      setSearchResults(fallback); 
+      setSearchResults(fallback);
+      const filteredDisplay = fallback.filter(
+        (result) => !composerItems.some(
+          (composerItem) => composerItem.nam_code === result.nam_code
+        )
+      ); 
+      setSearchDisplay(filteredDisplay);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleClear = () => setSearchResults(null);
-
+  const handleClear = () => {
+    setSearchResults(null);
+    setSearchDisplay(null);
+  }
   // Composer actions
-  const handleAddToComposer = (item) => {
-    console.log("Adding to composer:", item);
-    if (
-      !composerItems.some(
-        (i) => i.nam_code === item.nam_code && i.icd_code === item.icd_code
-      )
-    ) {
-      setComposerItems((prev) => [...prev, item]);
+const handleAddToComposer = (itemToAdd) => {
+    console.log("Adding to composer:", itemToAdd);
+    if (!composerItems.some((i) => i.nam_code === itemToAdd.nam_code)) {
+      setComposerItems((prev) => [...prev, itemToAdd]);
+      setSearchDisplay((prev) =>
+        prev.filter((item) => item.nam_code !== itemToAdd.nam_code)
+      );
     }
   };
 
+
   const handleRemoveFromComposer = (itemToRemove) => {
-    const key = itemToRemove.nam_code ? "nam_code" : "icd_code";
-    setComposerItems((prev) =>
-      prev.filter((item) => item[key] !== itemToRemove[key])
+    const newComposerItems = composerItems.filter(
+      (item) => item.nam_code !== itemToRemove.nam_code
     );
+    setComposerItems(newComposerItems);
+    if (searchResults) {
+      const newDisplayList = searchResults.filter(
+        (originalItem) => !newComposerItems.some(
+          (composerItem) => composerItem.nam_code === originalItem.nam_code
+        )
+      );
+      setSearchDisplay(newDisplayList);
+    }
   };
 
   const clearComposer = () => {
@@ -145,7 +169,7 @@ const HomePage = () => {
 
       <div style={{
         margin: "0 clamp(1rem, 5vw, 7em)",
-        minHeight: "100vh",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
@@ -158,26 +182,27 @@ const HomePage = () => {
           flexDirection: "row",
           flexGrow: 1,
           gap: "2rem",
-          overflow: "hidden"
+          overflow: "hidden",
+          minHeight:0
         }}>
           <div className="left" style={{
             display: "flex",
             flexDirection: "column",
             width: isMobileView ? "100%" : "70%",
-            flex: isMobileView ? "1" : "2 1 70%"
+            flex: isMobileView ? "1" : "2 1 70%",
+            minHeight:0
           }}>
             <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
             <div className="results-container" style={{
               flexGrow: 1,
               overflowY: "auto",
               padding: "0.5rem",
-              maxHeight: isMobileView ? "calc(100vh - 200px)" : "calc(100vh - 150px)"
             }}>
-              {!loading && searchResults && searchResults.length === 0 && (
+              {!loading && searchDisplay && searchDisplay.length === 0 && (
                 <EmptyState />
               )}
-              {!loading && searchResults && searchResults.length > 0 && (
-                searchResults.map((result, index) => (
+              {!loading && searchDisplay && searchDisplay.length > 0 && (
+                searchDisplay.map((result, index) => (
                   <div 
                     key={result.id} 
                     className="result-item"
