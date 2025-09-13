@@ -32,7 +32,6 @@ nav p {
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
-  z-index: 101;
   min-width: 0; /* Prevents text overflow */
 }
 
@@ -565,4 +564,26 @@ right: 0.25rem;
   .hamburger span {
 height: 2px;
   }
+}
+
+/* --- MODIFICATION: Dark Theme Styles for Mobile Menu --- */
+
+/* Styles the slide-out panel's background */
+body.dark-theme .nav-links {
+  background-color: #1A1A1A; /* Card Background */
+}
+
+/* Makes the background overlay darker */
+body.dark-theme .menu-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Makes the 'X' close button white */
+body.dark-theme .hamburger-open span {
+  background-color: #FFFFFF;
+}
+
+/* Styles the divider line above the logos inside the menu */
+body.dark-theme .menu-logos {
+  border-top-color: #2F2F2F; /* Borders / Dividers */
 }
