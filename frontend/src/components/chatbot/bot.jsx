@@ -4,7 +4,6 @@ import "./bot.css";
 const Bot = () => {
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [messages, setMessages] = useState([
     {
       sender: "bot",
@@ -14,11 +13,11 @@ const Bot = () => {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Show bot icon after 5 seconds
+  // Show bot icon after 5 seconds with pop animation
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(true);
-    }, 5000);
+    },500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -70,22 +69,15 @@ const Bot = () => {
   return (
     <>
       {visible && (
-        <div className={`bot-container ${darkMode ? "dark" : ""}`}>
+        <div className="bot-container">
           {/** Floating Icon **/}
           {!open && (
-            <div className="bot-icon" onClick={() => setOpen(true)}>
-              {/* Replace with your logo path */}
+            <div className="bot-icon pop-in" onClick={() => setOpen(true)}>
               <img 
-                src="/path-to-your-logo.png" 
+                src="/assets/boticon.png" 
                 alt="Ayurveda Assistant" 
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
+                className="bot-icon-img"
               />
-              <span role="img" aria-label="chat" style={{display: 'none'}}>
-                💬
-              </span>
             </div>
           )}
 
@@ -95,12 +87,6 @@ const Bot = () => {
               <div className="bot-header">
                 <div className="bot-title">
                   <span>Ayurveda Assistant</span>
-                  <button 
-                    className="theme-toggle"
-                    onClick={() => setDarkMode(!darkMode)}
-                  >
-                    {darkMode ? '☀️' : '🌙'}
-                  </button>
                 </div>
                 <button className="close-btn" onClick={() => setOpen(false)}>
                   ✖

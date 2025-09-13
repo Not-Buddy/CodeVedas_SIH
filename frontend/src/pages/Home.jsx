@@ -5,7 +5,7 @@ import Results from "../components/results/Results.jsx";
 import SearchBar from "../components/globalsearch/searchbar.jsx";
 import Composer from "../components/composer/Composer.jsx";
 import { fallback } from "./fallback.js";
-import Bot from "../components/chatbot/box.jsx";
+import Bot from "../components/chatbot/bot.jsx";
 
 const EmptyState = () => (
   <div style={{ 
@@ -218,11 +218,6 @@ const HomePage = () => {
                 ))
               )}
             </div>
-
-            {/* 👇 Bot assistant (bottom of left side) */}
-            <div style={{ marginTop: "1rem", marginBottom: "1rem", alignSelf: "flex-end" }}>
-              <Bot />
-            </div>
           </div>
 
           {/* Desktop Composer - hidden on mobile */}
@@ -232,12 +227,23 @@ const HomePage = () => {
               flexDirection: "column",
               width: "30%",
               minWidth: "300px",
-              flex: "1 1 30%"
+              flex: "1 1 30%",
+              position: "relative"
             }}>
               <Composer
                 items={composerItems}
                 onRemove={handleRemoveFromComposer}
               />
+              
+              {/* 👇 Bot assistant positioned at bottom right of composer */}
+              <div style={{ 
+                position: "absolute", 
+                bottom: "1rem", 
+                right: "1rem",
+                zIndex: 10
+              }}>
+                <Bot />
+              </div>
             </div>
           )}
         </div>
@@ -327,8 +333,30 @@ const HomePage = () => {
                   items={composerItems}
                   onRemove={handleRemoveFromComposer}
                 />
+                
+                {/* 👇 Bot assistant positioned at bottom right on mobile */}
+                <div style={{ 
+                  position: "fixed", 
+                  bottom: isComposerExpanded ? "calc(60vh + 1rem)" : "4rem",
+                  right: "1rem",
+                  zIndex: 1001
+                }}>
+                  <Bot />
+                </div>
               </div>
             )}
+          </div>
+        )}
+        
+        {/* Bot for mobile when composer is not expanded */}
+        {isMobileView && !isComposerExpanded && (
+          <div style={{ 
+            position: "fixed", 
+            bottom: "4rem",
+            right: "1rem",
+            zIndex: 1000
+          }}>
+            <Bot />
           </div>
         )}
       </div>
