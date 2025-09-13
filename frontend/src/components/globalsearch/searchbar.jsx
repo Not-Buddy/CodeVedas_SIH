@@ -12,7 +12,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
     discipline: [],
     language: []
   });
-  const [searchType, setSearchType] = useState('Auto'); 
+  const [searchType, setSearchType] = useState('regex'); 
 
   const recognitionRef = useRef(null);
 
@@ -54,7 +54,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
 
   const handleClearAll = () => {
     setSearchQuery('');
-    setSearchType('Auto'); 
+    setSearchType('regex'); 
     setActiveFilters({
       systems: [],
       organSystem: 'All',
@@ -148,7 +148,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
             onChange={(e) => setSearchType(e.target.value)}
             aria-label="Select search type"
           >
-            <option value="auto">Auto</option>
+            <option value="regex">Auto</option>
             <option value="regex">Direct</option>
             <option value="semantic">Semantic</option>
           </select>

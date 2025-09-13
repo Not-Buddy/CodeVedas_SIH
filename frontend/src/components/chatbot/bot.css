@@ -44,6 +44,8 @@
 .bot-icon {
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-right: -80px;
+  margin-bottom: -50px;
   overflow: hidden;
   display: flex;
   justify-content: center;
