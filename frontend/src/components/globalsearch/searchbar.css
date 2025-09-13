@@ -115,6 +115,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,44 +125,57 @@
 
 .voice-search-modal {
   background: white;
-  border-radius: 20px;
-  padding: 40px 30px;
+  border-radius: 24px;
+  padding: 40px;
   text-align: center;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  min-width: 300px;
+  width: 90%;
+  max-width: 400px;
   animation: modalSlideUp 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .voice-animation-container {
   position: relative;
-  display: inline-block;
-  margin-bottom: 20px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .voice-pulse-ring {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 150px;
   border: 2px solid #57D24B;
   border-radius: 50%;
-  animation: voiceBreathing 2s infinite ease-in-out;
+  /* The animation now handles scale and opacity */
+  animation: sonarEffect 2.4s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity:0;
 }
 
 .voice-pulse-ring.delay-1 {
-  animation-delay: 0.3s;
-  width: 100px;
-  height: 100px;
-  opacity: 0.7;
+  animation-delay: 0.8s;
+}
+.voice-pulse-ring.delay-2 {
+  animation-delay: 1.6s;
 }
 
-.voice-pulse-ring.delay-2 {
-  animation-delay: 0.6s;
-  width: 120px;
-  height: 120px;
-  opacity: 0.4;
+@keyframes sonarEffect {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
 }
 
 .voice-microphone-icon {
@@ -169,26 +183,25 @@
   z-index: 10;
   background: #57D24B;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  animation: microphonePulse 2.5s infinite ease-in-out;
 }
 
 .voice-microphone-icon svg {
   stroke: white;
 }
 
-@keyframes voiceBreathing {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.8;
+@keyframes microphonePulse {
+  0%,
+  100% {
+    transform: scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.1);
-    opacity: 0.3;
+    transform: scale(1.05);
   }
 }
 
