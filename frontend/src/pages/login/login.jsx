@@ -1,31 +1,50 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login attempt:', { email, password });
+
+    // Get registered users from localStorage
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Find a user with matching email
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+      alert('No account found with this email!');
+      return;
+    }
+
+    // Check password
+    if (user.password !== password) {
+      alert('Incorrect password!');
+      return;
+    }
+
+    // Login successful
+    alert(`Welcome back, ${user.firstName}!`);
+    navigate('/home'); // Redirect after successful login
   };
 
   const handleOTPLogin = () => {
     // Handle OTP login logic here
-    console.log('OTP login requested');
+    alert('OTP login requested');
   };
 
   const handleForgotPassword = () => {
     // Handle forgot password logic here
-    console.log('Forgot password requested');
+    alert('Forgot password requested');
   };
 
   const handleSignUp = () => {
-    // Handle sign up navigation here
-    console.log('Sign up requested');
+    navigate('/register');
   };
 
   return (
@@ -105,11 +124,10 @@ const Login = () => {
                   Forgot password?
                 </button>
               </div>
-              <Link to={"/home"}>
-                <button type="submit" className="login-button">
-                  Log in
-                </button>
-              </Link>
+
+              <button type="submit" className="login-button">
+                Log in
+              </button>
 
               <button type="button" className="otp-button" onClick={handleOTPLogin}>
                 Login with OTP
@@ -131,13 +149,11 @@ const Login = () => {
 
         <div className="hero-section">
           <div className="hero-background">
-            {/* Desktop Image */}
             <img 
               src="/assets/logindekstopbackground.png" 
               alt="Desktop Hero" 
               className="hero-image-desktop"
             />
-            {/* Mobile Image */}
             <img 
               src="/assets/loginmobilebackground.png" 
               alt="Mobile Hero" 

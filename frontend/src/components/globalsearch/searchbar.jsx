@@ -1,15 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './searchbar.css';
 
 const SearchBar = ({ onSubmit, onClear }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     systems: [],
     organSystem: 'All',
     discipline: [],
     language: []
   });
+
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    // Check if browser supports speech recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'en-US';
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setSearchQuery(transcript);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -71,6 +106,27 @@ const SearchBar = ({ onSubmit, onClear }) => {
     }
   };
 
+  const startVoiceSearch = () => {
+    if (!recognitionRef.current) {
+      alert('Voice search is not supported in your browser');
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      setIsListening(true);
+      recognitionRef.current.start();
+    }
+  };
+
+  const stopVoiceSearch = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+    setIsListening(false);
+  };
 
   return (
     <div className="global-search-container">
@@ -88,7 +144,23 @@ const SearchBar = ({ onSubmit, onClear }) => {
           value={searchQuery}
           onChange={handleSearchChange}
         />
-        {/* MODIFICATION: Added a submit button with a search icon */}
+        
+        {/* Voice Search Button */}
+        <button 
+          type="button" 
+          className={`voice-search-btn ${isListening ? 'listening' : ''}`}
+          onClick={startVoiceSearch}
+          aria-label="Voice Search"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="22"></line>
+            <line x1="8" y1="22" x2="16" y2="22"></line>
+          </svg>
+        </button>
+
+        {/* Search Submit Button */}
         <button type="submit" className="search-submit-btn" aria-label="Search">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
@@ -97,6 +169,31 @@ const SearchBar = ({ onSubmit, onClear }) => {
         </button>
       </form>
 
+      {/* Voice Search Overlay */}
+      {isListening && (
+        <div className="voice-search-overlay" onClick={stopVoiceSearch}>
+          <div className="voice-search-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="voice-animation-container">
+              <div className="voice-pulse-ring"></div>
+              <div className="voice-pulse-ring delay-1"></div>
+              <div className="voice-pulse-ring delay-2"></div>
+              <div className="voice-microphone-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="22"></line>
+                  <line x1="8" y1="22" x2="16" y2="22"></line>
+                </svg>
+              </div>
+            </div>
+            <h3 className="voice-search-title">Listening...</h3>
+            <p className="voice-search-subtitle">Speak now to search</p>
+            <button className="voice-cancel-btn" onClick={stopVoiceSearch}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="search-controls">
         <div className="filters-section">
