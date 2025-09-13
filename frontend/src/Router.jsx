@@ -4,7 +4,7 @@ import Starter from './components/loader/Starter';
 import HomePage from './pages/Home';
 import Login from './pages/login/login';
 import RegistrationPage from './pages/registration/registration';
-import Documentation from 'frontend/src/pages/apidocumentation/documentation.jsx';
+import Documentation from './pages/apidocumentation/documentation.jsx';
 
 const Router = () => {
   return (

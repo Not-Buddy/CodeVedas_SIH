@@ -61,11 +61,11 @@ const Navbar = ({ isDarkMode, onToggleTheme }) => {
                 <div className="right">
                     <div className={`nav-links ${isMenuOpen ? 'nav-open' : ''}`}>
                         <a 
-                            className={`nav-link ${isActive('/apihelp')}`}
-                            href="/apihelp"
+                            className={`nav-link ${isActive('/docs')}`}
+                            href="/docs"
                             onClick={(e) => {
                                 e.preventDefault();
-                                navigate('/apihelp');
+                                navigate('/docs');
                                 setIsMenuOpen(false);
                             }}
                         >
