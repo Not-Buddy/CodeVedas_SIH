@@ -237,7 +237,7 @@ body {
   text-decoration: underline;
 }
 
-.footer {
+.log-footer {
   margin-top: auto;
   text-align: center;
   padding-top: 1.5rem;
@@ -245,7 +245,7 @@ body {
   width: 100%;
 }
 
-.footer p {
+.log-footer p {
   color: #999;
   font-size: 0.8rem;
 }
@@ -472,12 +472,12 @@ body {
     margin-top: 1rem;
   }
   
-  .footer {
+  .log-footer {
     padding-top: 1rem;
     padding-bottom: 0.5rem;
   }
   
-  .footer p {
+  .log-footer p {
     font-size: 0.75rem;
   }
   

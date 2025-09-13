@@ -142,7 +142,7 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="footer">
+          <div className="log-footer">
             <p>© 2025 ALL RIGHTS RESERVED</p>
           </div>
         </div>
