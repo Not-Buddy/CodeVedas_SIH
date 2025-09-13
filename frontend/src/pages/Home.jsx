@@ -145,7 +145,7 @@ const HomePage = () => {
 
       <div style={{
         margin: "0 clamp(1rem, 5vw, 7em)",
-        minHeight: "100vh",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
@@ -158,20 +158,21 @@ const HomePage = () => {
           flexDirection: "row",
           flexGrow: 1,
           gap: "2rem",
-          overflow: "hidden"
+          overflow: "hidden",
+          minHeight:0
         }}>
           <div className="left" style={{
             display: "flex",
             flexDirection: "column",
             width: isMobileView ? "100%" : "70%",
-            flex: isMobileView ? "1" : "2 1 70%"
+            flex: isMobileView ? "1" : "2 1 70%",
+            minHeight:0
           }}>
             <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
             <div className="results-container" style={{
               flexGrow: 1,
               overflowY: "auto",
               padding: "0.5rem",
-              maxHeight: isMobileView ? "calc(100vh - 200px)" : "calc(100vh - 150px)"
             }}>
               {!loading && searchResults && searchResults.length === 0 && (
                 <EmptyState />
