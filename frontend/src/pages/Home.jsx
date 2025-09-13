@@ -5,6 +5,7 @@ import Results from "../components/results/Results.jsx";
 import SearchBar from "../components/globalsearch/searchbar.jsx";
 import Composer from "../components/composer/Composer.jsx";
 import { fallback } from "./fallback.js";
+import Bot from "../components/chatbot/box.jsx";
 
 const EmptyState = () => (
   <div style={{ 
@@ -101,9 +102,10 @@ const HomePage = () => {
   const handleClear = () => {
     setSearchResults(null);
     setSearchDisplay(null);
-  }
+  };
+
   // Composer actions
-const handleAddToComposer = (itemToAdd) => {
+  const handleAddToComposer = (itemToAdd) => {
     console.log("Adding to composer:", itemToAdd);
     if (!composerItems.some((i) => i.nam_code === itemToAdd.nam_code)) {
       setComposerItems((prev) => [...prev, itemToAdd]);
@@ -112,7 +114,6 @@ const handleAddToComposer = (itemToAdd) => {
       );
     }
   };
-
 
   const handleRemoveFromComposer = (itemToRemove) => {
     const newComposerItems = composerItems.filter(
@@ -215,6 +216,11 @@ const handleAddToComposer = (itemToAdd) => {
                   </div>
                 ))
               )}
+            </div>
+
+            {/* 👇 Bot assistant (bottom of left side) */}
+            <div style={{ marginTop: "1rem", marginBottom: "1rem", alignSelf: "flex-end" }}>
+              <Bot />
             </div>
           </div>
 
