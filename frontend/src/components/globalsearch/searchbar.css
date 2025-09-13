@@ -492,3 +492,9 @@ border-color: #555;
   display: flex;
   overflow: hidden; 
 }
+
+body.dark-theme .search-type-selector {
+  background-color: #1A1A1A; 
+  color: #CCCCCC; 
+  border-color: #2F2F2F;
+}

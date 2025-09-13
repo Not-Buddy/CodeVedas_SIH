@@ -68,7 +68,7 @@ const HomePage = () => {
       params.append('discipline', filters.discipline[0].toLowerCase());
     }
     params.append('method', type);
-    params.append('limit', '7');
+    params.append('limit', '50');
     if(type === "semantic"){
       params.append('threshold', '0.6');  
     }
@@ -85,7 +85,7 @@ const HomePage = () => {
       setSearchResults(newResults);
       const filteredDisplay = newResults.filter(
         (result) => !composerItems.some(
-          (composerItem) => composerItem.nam_code === result.nam_code
+          (composerItem) => composerItem.nam_code + composerItem.icd_code === result.nam_code + result.icd_code
         )
       ); 
       setSearchDisplay(filteredDisplay);
@@ -94,7 +94,7 @@ const HomePage = () => {
       setSearchResults(fallback);
       const filteredDisplay = fallback.filter(
         (result) => !composerItems.some(
-          (composerItem) => composerItem.nam_code === result.nam_code
+          (composerItem) => composerItem.nam_code + composerItem.icd_code === result.nam_code + result.icd_code
         )
       ); 
       setSearchDisplay(filteredDisplay);
@@ -111,23 +111,23 @@ const HomePage = () => {
   // Composer actions
   const handleAddToComposer = (itemToAdd) => {
     console.log("Adding to composer:", itemToAdd);
-    if (!composerItems.some((i) => i.nam_code === itemToAdd.nam_code)) {
+    if (!composerItems.some((i) => i.nam_code + i.icd_code === itemToAdd.nam_code + itemToAdd.icd_code)) {
       setComposerItems((prev) => [...prev, itemToAdd]);
       setSearchDisplay((prev) =>
-        prev.filter((item) => item.nam_code !== itemToAdd.nam_code)
+        prev.filter((item) => item.nam_code + item.icd_code !== itemToAdd.nam_code + itemToAdd.icd_code)
       );
     }
   };
 
   const handleRemoveFromComposer = (itemToRemove) => {
     const newComposerItems = composerItems.filter(
-      (item) => item.nam_code !== itemToRemove.nam_code
+      (item) => item.nam_code + item.icd_code !== itemToRemove.nam_code + itemToRemove.icd_code
     );
     setComposerItems(newComposerItems);
     if (searchResults) {
       const newDisplayList = searchResults.filter(
         (originalItem) => !newComposerItems.some(
-          (composerItem) => composerItem.nam_code === originalItem.nam_code
+          (composerItem) => composerItem.nam_code + composerItem.icd_code === originalItem.nam_code + originalItem.icd_code
         )
       );
       setSearchDisplay(newDisplayList);

@@ -148,7 +148,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
             onChange={(e) => setSearchType(e.target.value)}
             aria-label="Select search type"
           >
-            <option value="regex">Auto</option>
+            <option value="regex ">Auto</option>
             <option value="regex">Direct</option>
             <option value="semantic">Semantic</option>
           </select>
