@@ -193,7 +193,8 @@ const HomePage = () => {
             flex: isMobileView ? "1" : "2 1 70%",
             minHeight:0
           }}>
-            <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} />
+            <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} results={searchDisplay} />
+
             <div className="results-container" style={{
               flexGrow: 1,
               overflowY: "auto",

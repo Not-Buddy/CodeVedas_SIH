@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './searchbar.css';
 
-const SearchBar = ({ onSubmit, onClear }) => {
+const SearchBar = ({ onSubmit, onClear, results }) => {
+
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -207,7 +208,12 @@ const SearchBar = ({ onSubmit, onClear }) => {
             )}
           </button>
           
-          <div className="results-count">Results: 4</div>
+         
+        <div className="results-count">{`Results: ${results ? results.length : 0}`}</div>
+
+
+         
+
         </div>
         
         <button className="clear-all-btn" onClick={handleClearAll}>
