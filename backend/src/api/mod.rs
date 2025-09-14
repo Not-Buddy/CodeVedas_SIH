@@ -6,6 +6,10 @@ use crate::dbcodes::{mongo, redis};
 pub mod icd_search;
 pub mod namaste_search;
 pub mod terminology_search;
+pub mod autocomplete;
+
+pub use autocomplete::{autocomplete_suggestions, initialize_autocomplete_data};
+
 
 // Re-export functions from submodules
 pub use icd_search::{icd_search, icd_all, icd_biomedicine, icd_tm2};

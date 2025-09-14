@@ -3,7 +3,7 @@ use crate::dbcodes::{mongo, redis};
 use crate::api;  // Import the api module
 use actix_cors::Cors;
 use crate::gemini::embedding::generate_embeddings_handler;
-
+use crate::api::autocomplete::{autocomplete_suggestions, initialize_autocomplete_data};
 
 // Configure all routes
 fn configure_routes(cfg: &mut web::ServiceConfig) {
@@ -70,6 +70,11 @@ fn configure_routes(cfg: &mut web::ServiceConfig) {
             web::scope("/namaste")
                 .route("/search", web::get().to(api::namaste_search))
                 .route("/all", web::get().to(api::namaste_all))
+        )
+        .service(
+           web::scope("/autocomplete")
+            .route("/suggestions", web::get().to(api::autocomplete_suggestions))
+            .route("/initialize", web::post().to(api::initialize_autocomplete_data))
         );
 }
 
