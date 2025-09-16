@@ -211,6 +211,79 @@ curl -X POST http://localhost:8080/autocomplete/initialize
 
 Comprehensive API documentation is automatically generated and made available when the application is deployed in either backend or frontend environments. This documentation serves as the primary reference for all available endpoints and provides detailed technical specifications for system integration.
 
+---
+## 💻 API Endpoints
+
+### 🩺 System Health Checks
+
+* `GET /health`: Check overall system health.
+* `GET /gateway`: Check API Gateway and OAuth 2.0 status.
+* `GET /api`: Check REST API server status.
+
+### ⚙️ Microservices Status
+
+* `GET /services/terminology`: Check Terminology service status.
+* `GET /services/mapping`: Check Mapping service status.
+* `GET /services/sync`: Check Sync service status.
+* `GET /services/audit`: Check Audit service status.
+
+### 🧠 Core Components
+
+* `GET /core/fhir`: Check FHIR R4 engine status.
+* `GET /core/vocabulary`: Check Vocabulary manager status.
+* `GET /core/translation`: Check Translation engine status.
+
+### 💾 Data Layer
+
+* `GET /data/mongodb`: Check MongoDB connection status.
+* `GET /data/mongodb/collections`: List MongoDB collections.
+* `GET /data/redis`: Check Redis cache status.
+
+### 🌐 External Services
+
+* `GET /external/who-icd11`: Check WHO ICD-11 API status.
+* `GET /external/namaste-csv`: Check NAMASTE CSV files status.
+
+---
+
+### 📚 Terminology
+
+* `GET /terminology/search`: Search both NAMASTE and ICD-11.
+    * `?search=term` (required): The term to search for.
+    * `&method=auto|semantic|regex`: The search method. Defaults to **auto**.
+    * `&limit=N`: The maximum number of results to return.
+    * `&threshold=0.7`: The similarity threshold for semantic searches.
+    * `&language=both|english|hindi`: Filter results by language for NAMASTE.
+
+---
+
+### 🏥 NAMASTE (Ayurveda)
+
+* `GET /namaste/search`: Search the NAMASTE dataset.
+    * `?search=term`
+    * `&limit=N`
+    * `&language=both|english|hindi`
+* `GET /namaste/all`: Get all NAMASTE entries.
+    * `?limit=N`
+    * `&language=both|english|hindi`
+
+---
+
+### 🩺 ICD-11
+
+* `GET /icd/search`: Search the ICD-11 dataset.
+    * `?search=term`
+    * `&limit=N`
+    * `&discipline=biomedicine|tm2`: Filter by discipline.
+    * `&parent=url`: Filter by parent URL.
+* `GET /icd/all`: Get all ICD-11 codes.
+    * `?limit=N`
+* `GET /icd/biomedicine`: Get only ICD-11 Biomedicine codes.
+    * `?limit=N`
+* `GET /icd/tm2`: Get only ICD-11 Traditional Medicine codes.
+    * `?limit=N`
+
+
 ### Documentation Access
 
 The API documentation is accessible through designated documentation endpoints that are established during application runtime. This automated documentation generation ensures that all endpoint specifications remain current and accurately reflect the deployed API implementation.
