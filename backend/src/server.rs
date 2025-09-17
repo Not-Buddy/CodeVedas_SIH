@@ -3,7 +3,6 @@ use crate::dbcodes::{mongo, redis};
 use crate::api;  // Import the api module
 use actix_cors::Cors;
 use crate::gemini::embedding::generate_embeddings_handler;
-use crate::api::autocomplete::{autocomplete_suggestions, initialize_autocomplete_data};
 
 // Configure all routes
 fn configure_routes(cfg: &mut web::ServiceConfig) {
@@ -91,7 +90,14 @@ pub fn create_app() -> App<
 > {
     let cors = Cors::default()
     .allowed_origin("http://localhost:5173")
-    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+    .allowed_origin_fn(|origin, _req_head| {
+        let origin_str = origin.to_str().unwrap_or("");
+        // Allow localhost variants and trycloudflare.com subdomains
+        origin_str.contains("localhost") || 
+        origin_str.contains("127.0.0.1") ||
+        origin_str.ends_with(".trycloudflare.com")
+    })
+    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE", "OPTIONS"])
     .allowed_headers(vec![
         http::header::AUTHORIZATION,
         http::header::ACCEPT,
@@ -99,6 +105,7 @@ pub fn create_app() -> App<
     ])
     .supports_credentials()
     .max_age(3600);
+
 
     App::new()
         .wrap(cors)
@@ -201,7 +208,7 @@ pub async fn start_server() -> std::io::Result<()> {
     
     
     HttpServer::new(|| create_app())
-        .bind("127.0.0.1:8080")?
+        .bind("0.0.0.0:8080")?
         .run()
         .await
 }

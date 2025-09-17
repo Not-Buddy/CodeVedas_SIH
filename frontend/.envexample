@@ -1,0 +1,4 @@
+VITE_GEMINI_API_KEY=
+
+API_BASE_URL=https://clicking-layer-common-exports.trycloudflare.com
+VITE_API_BASE_URL=https://clicking-layer-common-exports.trycloudflare.com

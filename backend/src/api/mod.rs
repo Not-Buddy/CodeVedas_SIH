@@ -1,4 +1,4 @@
-use actix_web::{web, HttpResponse, Result};
+use actix_web::{HttpResponse, Result};
 use serde::{Deserialize, Serialize};
 use crate::dbcodes::{mongo, redis};
 

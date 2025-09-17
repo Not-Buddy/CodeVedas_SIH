@@ -3,7 +3,6 @@
 use actix_web::{HttpResponse, Result};
 use mongodb::bson::{doc, Document};
 use mongodb::options::UpdateOptions;
-use serde::{Deserialize, Serialize};
 use std::env;
 use std::sync::Arc;
 use tokio::sync::Semaphore;

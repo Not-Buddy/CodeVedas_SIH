@@ -3,7 +3,6 @@ use tokio::sync::OnceCell;
 use serde::{Deserialize, Serialize};
 use std::env;
 use dotenv::dotenv;
-use std::collections::HashMap;
 
 // Global Redis client instance
 static REDIS_CLIENT: OnceCell<ConnectionManager> = OnceCell::const_new();
@@ -150,28 +149,6 @@ impl RedisClient {
         } else {
             MatchType::Related
         }
-    }
-
-    pub async fn add_autocomplete_suggestion(
-        &self,
-        key: &str,
-        suggestion: &str,
-        score: f64,
-        payload: Option<&str>,
-    ) -> Result<(), redis::RedisError> {
-        let mut conn = self.manager.clone();
-        
-        let _: () = conn.zadd(format!("autocomplete:{}", key), suggestion, score).await?;
-        
-        if let Some(payload_data) = payload {
-            let _: () = conn.hset(
-                format!("autocomplete:{}:payloads", key),
-                suggestion,
-                payload_data,
-            ).await?;
-        }
-        
-        Ok(())
     }
 
     // Enhanced autocomplete with relevance scoring

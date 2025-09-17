@@ -7,6 +7,9 @@ import Composer from "../components/composer/Composer.jsx";
 import { fallback } from "./fallback.js";
 import Bot from "../components/chatbot/bot.jsx";
 
+// Get API base URL from environment variables
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8080';
+
 const EmptyState = () => (
   <div style={{ 
     marginTop: "1rem", 
@@ -29,7 +32,6 @@ const HomePage = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [isComposerExpanded, setIsComposerExpanded] = useState(false);
-
 
   // Check if mobile view
   useEffect(() => {
@@ -58,7 +60,7 @@ const HomePage = () => {
     setIsDarkMode(prevMode => !prevMode);
   };
 
-  // Search
+  // Search - Updated to use environment variables
   const handleSearchSubmit = async (searchData) => {
     const { query, filters, type } = searchData;
     const params = new URLSearchParams();
@@ -73,7 +75,8 @@ const HomePage = () => {
       params.append('threshold', '0.6');  
     }
 
-    const apiUrl = `http://127.0.0.1:8080/terminology/search?${params.toString()}`;
+    // Use environment variable for API URL
+    const apiUrl = `${API_BASE_URL}/terminology/search?${params.toString()}`;
     
     console.log('Constructed API URL:', apiUrl); 
     
