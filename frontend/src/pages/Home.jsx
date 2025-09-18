@@ -206,6 +206,8 @@ const HomePage = () => {
               flexGrow: 1,
               overflowY: "auto",
               padding: "0.5rem",
+              maskImage: 'linear-gradient(to bottom, transparent, black 40px, black 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 40px, black 100%)',
             }}>
               {!loading && searchDisplay && searchDisplay.length === 0 && (
                 <EmptyState />
