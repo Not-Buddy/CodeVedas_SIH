@@ -12,10 +12,48 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
     discipline: [],
     language: []
   });
-  const [searchType, setSearchType] = useState('regex'); 
+  const [searchType, setSearchType] = useState('regex');
+  const [suggestions, setSuggestions] = useState([]); 
 
   const recognitionRef = useRef(null);
+  const debounceTimeout = useRef(null);
 
+  // THis is for the autocomplete
+  useEffect(() => {
+    // Clear the previous timeout
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    if (searchQuery.trim().length > 1) { // Only search if query is > 1 char
+      debounceTimeout.current = setTimeout(async () => {
+        try {
+          const url = `http://127.0.0.1:8080/autocomplete/suggestions?query=${encodeURIComponent(searchQuery)}&limit=5`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error('Network response was not ok. Do better, backend.');
+          }
+          const data = await response.json();
+          setSuggestions(data.suggestions || []);
+          console.log("Suggestions recieved: ", data.suggestions);
+          
+        } catch (error) {
+          console.error("Failed to fetch autocomplete suggestions:", error);
+          setSuggestions([]); 
+        }
+      }, 300); // 300ms delay
+    } else {
+      setSuggestions([]); 
+    }
+
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+    };
+  }, [searchQuery]);
+
+  // This is for the Speech
   useEffect(() => {
     // Check if browser supports speech recognition
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -50,6 +88,12 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+    const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion.title);
+    sendSearchReq(suggestion.title);
+    setSuggestions([]);
   };
 
   const handleClearAll = () => {
@@ -96,11 +140,11 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
     return count;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
+    const sendSearchReq = (query) => {
+    setSuggestions([]); 
     
     const searchData = {
-      query: searchQuery,
+      query: query, 
       filters: activeFilters,
       type: searchType  
     };
@@ -110,9 +154,14 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    sendSearchReq(searchQuery);
+  };
+
   const startVoiceSearch = () => {
     if (!recognitionRef.current) {
-      alert('Voice search is not supported in your browser');
+      alert('Voice search is not supported in your browser. Use Chrome or Chromium based browsers to use voice functionality.');
       return;
     }
 
@@ -140,7 +189,8 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
         <h2 className="search-title">Global Search</h2>
       </div>
 
-      <form className="search-bar-wrapper" onSubmit={handleSubmit}>
+      <div className="search-form-wrapper"> 
+      <form className="search-input-container" onSubmit={handleSubmit}>
         <div className="search-type-selector">
           <select 
             className="search-type-dropdown"
@@ -148,21 +198,22 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
             onChange={(e) => setSearchType(e.target.value)}
             aria-label="Select search type"
           >
-            <option value="auto">Auto</option>
-            <option value="direct">Direct</option>
+            <option value="regex ">Auto</option>
+            <option value="regex">Direct</option>
             <option value="semantic">Semantic</option>
           </select>
-          <div className="selector-arrow"></div>
         </div>
 
         <input
           type="text"
           className="search-input"
           placeholder="Search by code, title, or synonym..."
-          value={searchQuery}
+          value={searchQuery} 
           onChange={handleSearchChange}
+          autoComplete="off" 
         />
         
+        {/* Voice Search Button */}
         <button 
           type="button" 
           className={`voice-search-btn ${isListening ? 'listening' : ''}`}
@@ -177,6 +228,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
           </svg>
         </button>
 
+        {/* Search Submit Button */}
         <button type="submit" className="search-submit-btn" aria-label="Search">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
@@ -184,6 +236,20 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
           </svg>
         </button>
       </form>
+
+      {suggestions.length > 0 && (
+          <ul className="suggestions-dropdown">
+            {suggestions.map((suggestion, index) => (
+              <li 
+                key={suggestion.id || index} 
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion.title}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {/* Voice Search Overlay */}
       {isListening && (

@@ -70,7 +70,7 @@ const HomePage = () => {
       params.append('discipline', filters.discipline[0].toLowerCase());
     }
     params.append('method', type);
-    params.append('limit', '50');
+    params.append('limit', '20');
     if(type === "semantic"){
       params.append('threshold', '0.6');  
     }
@@ -198,7 +198,7 @@ const HomePage = () => {
             flexDirection: "column",
             width: isMobileView ? "100%" : "70%",
             flex: isMobileView ? "1" : "2 1 70%",
-            minHeight:0
+            minHeight:0,
           }}>
             <SearchBar onSubmit={handleSearchSubmit} onClear={handleClear} results={searchDisplay} />
 
@@ -286,7 +286,7 @@ const HomePage = () => {
               }}
               onClick={composerItems.length > 0 ? toggleComposer : undefined}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: "flex" }}>
                 {composerItems.length > 0 && (
                   <span
                     style={{

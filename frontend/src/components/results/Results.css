@@ -246,6 +246,7 @@
 .results-container {
   scrollbar-width: auto;
   scrollbar-color: #4a90e2 #eaf1f8; /* Sets thumb and track colors for Firefox */
+  scrollbar-gutter: stable;
 }
 
 /* --- Dark Theme Styles --- */

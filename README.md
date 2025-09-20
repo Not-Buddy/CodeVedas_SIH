@@ -3,6 +3,8 @@
 
 A lightweight FHIR R4-compliant terminology microservice that integrates India's NAMASTE terminologies and WHO ICD-11 (Traditional Medicine Module 2 and Biomedicine) into EMR/EHR systems. Enables dual coding, autocomplete search, and secure bundle ingestion aligned with India's 2016 EHR Standards.
 
+Also comes with a sample client that consumes the API.
+
 ## 🎯 Problem Statement
 **ID: 25026** - Develop API to integrate NAMASTE and ICD-11 TM2 into existing EMR systems compliant with Electronic Health Record (EHR) Standards for India.
 
@@ -161,6 +163,7 @@ graph TB
 - **Rust** (stable)
 - **MongoDB** and **Redis**
 - **Docker** (optional for ICD-API)
+- **Node** (24.7.x and above)
 
 ### Installation
 
@@ -205,6 +208,13 @@ cargo run
 5. **Initialize Autocomplete**
 ```bash
 curl -X POST http://localhost:8080/autocomplete/initialize
+```
+
+
+5. **Start Client**
+```bash
+npm install
+npm run dev
 ```
 
 ## 🔗 API Endpoints
@@ -317,10 +327,13 @@ curl "http://localhost:8080/namaste/search?search=Jwara&limit=5&language=both"
 
 *** 
 
-**Team SRM-SIH-322** | Ministry of Ayush — AIIA | Smart India Hackathon 2025
+**Team CodeVedas** | Ministry of Ayush — AIIA | Smart India Hackathon 2025
 
 ## Reference links
-[1](https://icd.who.int/browse/2025-01/mms/en)
-[2](https://namaste.ayush.gov.in/ayurveda)
-[3](https://build.fhir.org/codesystem.html)
-[4](https://icd.who.int/docs/icd-api/APIDoc-Version2/)
+[ICD-11 Browser](https://icd.who.int/browse/2025-01/mms/en)
+
+[NAMASTE Codes](https://namaste.ayush.gov.in/ayurveda)
+
+[FHIR CodeSystem](https://build.fhir.org/codesystem.html)
+
+[ICD-11 API Docs](https://icd.who.int/docs/icd-api/APIDoc-Version2/)
