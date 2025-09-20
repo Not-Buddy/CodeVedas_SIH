@@ -17,9 +17,14 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
 
   const recognitionRef = useRef(null);
   const debounceTimeout = useRef(null);
+  const blockSuggestionFetch = useRef(false);
 
   // THis is for the autocomplete
   useEffect(() => {
+    if (blockSuggestionFetch.current) {
+      blockSuggestionFetch.current = false;
+      return;
+    }
     // Clear the previous timeout
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
@@ -91,6 +96,7 @@ const SearchBar = ({ onSubmit, onClear, results }) => {
   };
 
     const handleSuggestionClick = (suggestion) => {
+    blockSuggestionFetch.current = true;
     setSearchQuery(suggestion.title);
     sendSearchReq(suggestion.title);
     setSuggestions([]);

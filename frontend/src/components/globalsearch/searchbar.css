@@ -558,8 +558,7 @@ body.dark-theme .search-input {
 
 /* Add this to your searchbar.css file */
 
-/* Wrapper to position the suggestions dropdown relative 
-  to the search bar form.
+/* Wrapper to position the suggestions dropdown relative to the search bar form.
 */
 .search-form-wrapper {
   position: relative;
@@ -569,39 +568,53 @@ body.dark-theme .search-input {
 */
 .suggestions-dropdown {
   position: absolute;
-  top: 100%; /* Position it right below the parent wrapper */
+  top: calc(100% + 4px); /* MODIFICATION: Creates a 4px gap below the search bar */
   left: 0;
   right: 0;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-top: none;
-  border-radius: 0 0 8px 8px; /* Rounded corners on the bottom */
+  border-radius: 12px; /* MODIFICATION: Rounded all corners for a floating panel look */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   list-style-type: none;
   margin: 0;
-  padding: 0;
-  z-index: 1000; /* Ensure it appears above other content */
-  max-height: 250px; /* Prevent it from being too long */
-  overflow-y: auto; /* Add scroll if content overflows */
+  padding: 8px 0; /* MODIFICATION: Adjusted padding */
+  z-index: 1000;
+  max-height: 250px;
+  overflow-y: auto;
+  animation: fadeIn 0.2s ease-out;
 }
 
 /* Styles for each individual suggestion item (the <li> elements)
 */
 .suggestions-dropdown li {
-  padding: 12px 15px;
+  padding: 12px 20px;
   cursor: pointer;
   font-size: 14px;
   color: #333;
-  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s ease;
 }
 
-/* Remove border from the last item */
-.suggestions-dropdown li:last-child {
-  border-bottom: none;
-}
-
-/* Hover effect to give user feedback
+/* Hover and focus effect to give user feedback
 */
-.suggestions-dropdown li:hover {
-  background-color: #f5f5f5;
-}   
+.suggestions-dropdown li:hover,
+.suggestions-dropdown li:focus {
+  background-color: #f0fef0; /* A very light green */
+  outline: none;
+}
+
+/* --- Dark Theme Styles for Autocomplete --- */
+
+body.dark-theme .suggestions-dropdown {
+  background-color: #1A1A1A;
+  border-color: #2F2F2F;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .suggestions-dropdown li {
+  color: #CCCCCC;
+}
+
+body.dark-theme .suggestions-dropdown li:hover,
+body.dark-theme .suggestions-dropdown li:focus {
+  background-color: #2F2F2F;
+}
