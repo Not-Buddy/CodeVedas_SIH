@@ -29,9 +29,17 @@ body {
   background: linear-gradient(135deg, var(--white) 0%, var(--light-gray) 100%);
 }
 
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* Header Styles */
 .doc-header {
-  background: linear-gradient(90deg, var(--deep-blue) 0%, #57D24B 100%);
+  background: linear-gradient(-45deg, #57D24B, #4caf50, #2e7d32, #4a90e2);
+  background-size: 400% 400%; /* Required for the animation */
+  animation: animatedGradient 15s ease infinite; /* Apply the animation */
   color: var(--white);
   position: relative;
   overflow: hidden;
@@ -235,17 +243,22 @@ body {
   }
 }
 
+.feature-grid, .endpoints-container {
+  perspective: 1000px;
+}
+
 .feature-card {
   background: var(--white);
   padding: 1.5rem;
   border: 1px solid var(--medium-gray);
   border-radius: 0.75rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.2s;
+  transition: all 0.3s ease;
 }
 
 .feature-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px) rotateX(5deg) scale(1.02);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
 }
 
 .feature-icon-container {
@@ -340,6 +353,12 @@ body {
   border: 1px solid var(--medium-gray);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.endpoint-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
 }
 
 .endpoint-header {
@@ -397,26 +416,53 @@ body {
 /* Code Block */
 .code-block {
   position: relative;
-  margin: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e5e7eb; /* A light bar on top */
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  border: 1px solid var(--medium-gray);
+  border-bottom: none;
 }
 
 .code-language {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
   font-size: 0.75rem;
   color: var(--text-gray);
-  background: var(--dark-gray);
+  font-weight: 500;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  color: var(--text-gray);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background-color: var(--medium-gray);
+  color: var(--dark-gray);
 }
 
 .code-content {
   background: var(--dark-gray);
   color: var(--light-gray);
   padding: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0 0 0.5rem 0.5rem; /* Match the new header */
   overflow-x: auto;
+  border: 1px solid var(--dark-gray);
 }
 
 .code-content pre {

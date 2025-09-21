@@ -575,16 +575,31 @@ const FeatureCard = ({ title, description, icon: Icon }) => {
   );
 };
 
-const CodeBlock = ({ children, language = 'javascript' }) => (
-  <div className="code-block">
-    <div className="code-language">{language}</div>
-    <div className="code-content">
-      <pre>
-        <code>{children}</code>
-      </pre>
+const CodeBlock = ({ children, language = 'javascript' }) => {
+  const [copyText, setCopyText] = useState('Copy');
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(children).then(() => {
+      setCopyText('Copied!');
+      setTimeout(() => setCopyText('Copy'), 2000);
+    });
+  };
+
+  return (
+    <div className="code-block">
+      <div className="code-header">
+        <span className="code-language">{language}</span>
+        <button onClick={handleCopy} className="copy-btn">
+          {copyText === 'Copied!' ? <CheckCircle size={14} /> : <FileText size={14} />}
+          <span>{copyText}</span>
+        </button>
+      </div>
+      <div className="code-content">
+        <pre><code>{children}</code></pre>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Endpoint = ({ method, title, url, description, children }) => {
   return (
