@@ -134,6 +134,21 @@ body {
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--medium-gray);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  scrollbar-width: none;  /* For Firefox */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+/* For Firefox & IE/Edge - Target both potential containers */
+.doc-nav, .nav-list {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* For Chrome, Safari, etc. - Target both potential containers */
+.doc-nav::-webkit-scrollbar,
+.nav-list::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-list {
@@ -285,6 +300,31 @@ body {
 .feature-description {
   color: var(--dark-gray);
   line-height: 1.6;
+}
+
+/* Add perspective to the grid */
+.compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  perspective: 1000px; /* Add this line */
+}
+
+/* Add a transition to the card for a smooth effect */
+.compliance-card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--medium-gray);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease; /* Add this line */
+}
+
+/* Add the new hover effect */
+.compliance-card:hover {
+  transform: translateY(-5px) rotateX(5deg) scale(1.02);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
 }
 
 /* Benefits Box */
@@ -708,6 +748,20 @@ body {
   margin-bottom: 0;
 }
 
+/* Fixes text color on light-background boxes in dark mode */
+body.dark-theme .benefits-box .benefit-item,
+body.dark-theme .best-practices li {
+  color: var(--black); /* Use a dark text color for contrast */
+}
+
+/* Ensure headings in these boxes also remain dark and readable */
+body.dark-theme .benefits-box h3,
+body.dark-theme .best-practices h4,
+body.dark-theme .regulatory-box h3,
+body.dark-theme .regulatory-box p {
+    color: var(--deep-blue); /* Use the theme's dark blue color */
+}
+
 /* Navigation Styles */
 .doc-nav {
   position: sticky;
@@ -721,6 +775,7 @@ body {
 }
 
 .nav-list {
+  list-style-type: none;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0.75rem 1rem;
@@ -759,28 +814,82 @@ body {
   }
 }
 
-/* Tablet Screens */
-@media (min-width: 641px) and (max-width: 1024px) {
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .header-text h1 {
+    font-size: 2.5rem;
+  }
   .doc-main {
-    padding: 2rem 1rem;
+    padding: 2.5rem 1.5rem;
   }
-
-  .feature-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .compliance-grid {
+  .feature-grid, .compliance-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Large Screens */
-@media (min-width: 1025px) {
-  .feature-grid {
-    grid-template-columns: repeat(3, 1fr);
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 2rem 1rem 3rem;
+  }
+  .header-text h1 {
+    font-size: 2rem;
+  }
+  .header-text p {
+    font-size: 1rem;
+  }
+  .nav-list {
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+  .doc-main {
+    padding: 2rem 1rem;
+  }
+  .section-title {
+    font-size: 1.5rem;
+  }
+  .feature-grid, 
+  .benefits-grid, 
+  .compliance-grid {
+    grid-template-columns: 1fr;
+  }
+  .endpoint-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .method-tag {
+    margin-left: 0;
+  }
+  .back-to-top {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0.5rem;
+  }
+  .top-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .header-text h1 {
+    font-size: 1.8rem;
+  }
+  .badge {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  .doc-main {
+    padding: 1.5rem 1rem;
+  }
+  .section-description {
+    font-size: 1rem;
+  }
+  .footer-content {
+    padding: 2rem 1rem;
+  }
+  .footer-content h3 {
+    font-size: 1.5rem;
   }
 }
