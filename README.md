@@ -216,7 +216,25 @@ curl -X POST http://localhost:8080/autocomplete/initialize
 npm install
 npm run dev
 ```
-
+6 **Frontend Setup**
+# Navigate to frontend directory
+```bash
+cd frontend
+```
+# Install dependencies
+```bash
+npm install
+```
+# Configure environment
+```bash
+cp .envexample .env
+```
+### Edit .env to set API_BASE_URL=http://localhost:8080 or whatever url you have hosted the url to.
+# Start development server
+```bash
+npm run dev
+```
+### Proceed to host the frontend on cloudflare tunnels or any provider you like to use.
 ## 🔗 API Endpoints
 
 Comprehensive API documentation is automatically generated and made available when the application is deployed in either backend or frontend environments. This documentation serves as the primary reference for all available endpoints and provides detailed technical specifications for system integration.
