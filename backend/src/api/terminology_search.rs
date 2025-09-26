@@ -7,6 +7,7 @@ use futures::stream::TryStreamExt;
 use crate::dbcodes::mongo::MongoClient;
 use crate::gemini::embedding::call_gemini_embedding_api;
 
+#[allow(dead_code)]
 #[derive(Serialize, Deserialize)]
 pub struct ApiResponse {
     pub service: String,

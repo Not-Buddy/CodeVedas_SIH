@@ -159,9 +159,3 @@ impl NamasteCodec {
     }).collect()
 }
 }
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum NamasteDiscipline {
-    Ayurveda,
-    // Add others as needed based on your data
-}
